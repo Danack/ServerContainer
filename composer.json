@@ -1,0 +1,35 @@
+{
+    "name": "basereality/servercontainer",
+
+    "description": "A poor mans docker.",
+
+    "repositories": [
+        { 
+            "type": "composer", 
+             "url": "http://satis.basereality.com"
+        },
+        {
+          "type": "vcs",
+          "url": "https://github.com/danack/auryn"
+        }
+    ],
+
+    "require-dev": {
+        "phpunit/phpunit": "4.1.3"
+    },
+
+    "require":{
+        "aws/aws-sdk-php": "~2.7.12",
+        "danack/auryn": "dev-master",
+        "danack/console": "~2.6.0",
+        "danack/githubartaxservice": "dev-master",
+        "intahwebz/configurator": ">=0.1.1"
+    },
+    "autoload": {
+        "psr-0": {
+            "ServerContainer": ["src/"]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

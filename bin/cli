@@ -1,0 +1,158 @@
+#!/usr/bin/env php
+<?php
+
+use Danack\Console\Output\BufferedOutput;
+use Danack\Console\Formatter\OutputFormatterStyle;
+use Danack\Console\Helper\QuestionHelper;
+use Danack\Console\Application;
+use Danack\Console\Command\Command;
+use Danack\Console\Input\InputArgument;
+
+use Aws\Ec2\Ec2Client;
+
+require_once(__DIR__.'/../vendor/autoload.php');
+require_once __DIR__.'/../../clavis.php';
+
+//if (!ini_get('allow_url_fopen')) {
+//    echo "allow_url_fopen is not enabled, things will probably break.";
+//}
+
+function createClient($region) {
+    $config = array();
+    $config['key'] = AWS_SERVICES_KEY;
+    $config['secret'] = AWS_SERVICES_SECRET;
+    $config['region'] = $region;
+
+    return Ec2Client::factory($config);
+}
+
+/**
+ * @return \Auryn\Provider
+ */
+function setupCLIProvider() {
+    $provider = new Auryn\Provider();
+
+    $aliases = [
+        'ArtaxServiceBuilder\ResponseCache' =>
+        //'ArtaxServiceBuilder\ResponseCache\NullResponseCache'
+        'ArtaxServiceBuilder\ResponseCache\FileResponseCache'
+    ];
+    
+    $params = [
+        'cacheDirectory' => realpath(__DIR__."/../var/cache"),
+        'tempDirectory' => realpath(__DIR__."/../var/tmp"),
+    ];
+
+    foreach ($params as $key => $value) {
+        $provider->defineParam($key, $value);
+    }
+
+    $provider->delegate('Amp\Reactor', 'Amp\getReactor');
+    $provider->share('Amp\Reactor');
+    //$provider->share('Amp\Artax\Client');
+
+    foreach ($aliases as $key => $value) {
+        $provider->alias($key, $value);
+    }
+
+    $provider->defineParam('userAgent', 'Danack/ServerContainer');
+    
+    return $provider;
+}
+
+
+$commands = [
+    [
+        'killEC2Instances',
+        ['ServerContainer\Tool\KillEC2TestInstances', 'main'],
+        'Kill any existent EC2 instances'
+    ],
+    [
+        'launchEC2Instance',
+        ['ServerContainer\Tool\LaunchEC2TestInstance', 'main'],
+        'Launch an EC2 instance of the latest code'
+    ],
+    [
+        'deploy',
+        ['ServerContainer\Deployer\Deployer', 'run'],
+        'Deploy the latest stuff.'
+    ]
+];
+
+
+
+//Figure out what Command was requested.
+try {
+    $console = createConsole($commands);
+    $parsedCommand = $console->parseCommandLine();
+}
+catch(\Exception $e) {
+    //@TODO change to just catch parseException when that's implemented 
+    $output = new BufferedOutput();
+    $console->renderException($e, $output);
+    echo $output->fetch();
+    exit(-1);
+}
+
+
+//Run the command requested, or the help callable if no command was input
+try {
+    $output = $parsedCommand->getOutput();
+    $formatter = $output->getFormatter();
+    $formatter->setStyle('question', new OutputFormatterStyle('blue'));
+    $formatter->setStyle('info', new OutputFormatterStyle('blue'));
+    $injector = setupCLIProvider();
+    $questionHelper = new QuestionHelper();
+    $questionHelper->setHelperSet($console->getHelperSet());
+    $input = $parsedCommand->getInput();
+
+    $params['inputDir'] = __DIR__."/../";
+    $params['outputDir'] = __DIR__."/../";
+    $params = array_merge($params, $parsedCommand->getParams());
+    
+    $injector->execute(
+        $parsedCommand->getCallable(),
+        formatKeyNames($params)
+    );
+}
+catch(\Exception $e) {
+    echo "Unexpected exception of type ".get_class($e)." running Deployer`: ".$e->getMessage().PHP_EOL;
+    echo $e->getTraceAsString();
+    exit(-2);
+}
+
+
+function formatKeyNames($params) {
+    $newParams = [];
+    foreach ($params as $key => $value) {
+        $newParams[':'.$key] = $value;
+    }
+
+    return $newParams;
+}
+
+
+/**
+ * Creates a console application with all of the commands attached.
+ * @return Application
+ */
+function createConsole($commands) {
+    $console = new Application("Intahwebz", "1.0.0");
+
+    foreach ($commands as $command) {
+        $name = $command[0];
+        $callable = $command[1];
+        $newCommand = new Command($name, $callable);
+        $newCommand->setDescription($command[2]);
+        
+        if (isset($command['args'])) {
+            foreach($command['args'] as $arg) {
+                $newCommand->addArgument($arg[0], $arg[1], $arg[2]);
+            }
+        }
+
+        $console->add($newCommand);
+    }
+
+    return $console;
+}
