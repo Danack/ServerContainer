@@ -201,6 +201,11 @@ class EC2Manager {
                     }
                     
                     default: {
+                        if (array_key_exists($propertyName, $instance) == false) {
+                            echo "Unknown property $propertyName \n";
+                            var_dump($instance);
+                            return null;
+                        }
                         $propertyValue = $instance[$propertyName];
                     }
                 }

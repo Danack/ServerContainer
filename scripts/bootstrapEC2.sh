@@ -10,9 +10,8 @@ users+=("servercontainer")
 for user in "${users[@]}"
 do
    :
-   . ./createUser.sh $user
+   . ./build/createUser.sh $user
 done
-
 
 #mkdir -p /home/servercontainer
 

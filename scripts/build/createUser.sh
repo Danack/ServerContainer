@@ -6,6 +6,7 @@ if [ "$#" -ne 1 ]; then
 fi
 
 username=$1
+group="www-data"
 
 egrep -i -q "^${username}:" /etc/passwd
 
