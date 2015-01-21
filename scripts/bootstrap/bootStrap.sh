@@ -9,12 +9,17 @@ intahwebzGroup="www-data"
 
 cd /tmp
 
-wget -O boostrapEC2.sh https://github.com/Danack/ServerContainer/archive/master.tar.gz
+wget -O master.tgz https://github.com/Danack/ServerContainer/archive/master.tar.gz
+
+tar -xvf master.tgz
 
 cd ./ServerContainer-master/scripts
- 
 
+echo "before bootstrapEC2"
 . ./bootstrapEC2.sh
 
-#chown -R intahwebz:www-data /home/intahwebz
+echo "after bootstrapEC2"
+
+
+
 

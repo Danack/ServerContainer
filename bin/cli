@@ -7,6 +7,7 @@ use Danack\Console\Helper\QuestionHelper;
 use Danack\Console\Application;
 use Danack\Console\Command\Command;
 use Danack\Console\Input\InputArgument;
+use ServerContainer\ServerContainerException;
 
 use Aws\Ec2\Ec2Client;
 
@@ -64,14 +65,21 @@ function setupCLIProvider() {
 $commands = [
     [
         'killEC2Instances',
-        ['ServerContainer\Tool\KillEC2TestInstances', 'main'],
+        ['ServerContainer\Tool\EC2Manager', 'killTestInstances'],
         'Kill any existent EC2 instances'
     ],
     [
         'launchEC2Instance',
-        ['ServerContainer\Tool\LaunchEC2TestInstance', 'main'],
+        ['ServerContainer\Tool\EC2Manager', 'launchEC2TestInstance'],
         'Launch an EC2 instance of the latest code'
     ],
+
+    [
+        'logTestInstances',
+        ['ServerContainer\Tool\EC2Manager', 'logTestInstances'],
+        'Get the log from the test instance.'
+    ],
+
     [
         'deploy',
         ['ServerContainer\Deployer\Deployer', 'run'],
@@ -114,6 +122,11 @@ try {
         $parsedCommand->getCallable(),
         formatKeyNames($params)
     );
+}
+catch(ServerContainerException $sce) {
+    echo "Error running task: \n";
+    echo $sce->getMessage();
+    exit(-1);
 }
 catch(\Exception $e) {
     echo "Unexpected exception of type ".get_class($e)." running Deployer`: ".$e->getMessage().PHP_EOL;

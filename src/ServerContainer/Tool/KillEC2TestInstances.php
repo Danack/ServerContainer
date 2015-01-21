@@ -3,7 +3,8 @@
 namespace ServerContainer\Tool;
 
 use Aws\Ec2\Ec2Client;
-
+use Aws\Ec2\Exception\Ec2Exception;
+use ServerContainer\ServerContainerException;
 
 
 class KillEC2TestInstances {
@@ -20,7 +21,7 @@ class KillEC2TestInstances {
     /**
      * 
      */
-    function main() {
+    function killTestInstances() {
         $testInstances = $this->findTestInstances();
 
         if(count($testInstances) == 0){
@@ -31,10 +32,21 @@ class KillEC2TestInstances {
             foreach($testInstances as $testInstance){
                 echo $testInstance."\r\n";
             }
-                        
-            $response = $this->ec2->terminateInstances($testInstances);
-            var_dump($response->toArray());
-            echo "Test server should be dead.";
+
+            try {
+
+                
+                $response = $this->ec2->terminateInstances($testInstances);
+                var_dump($response->toArray());
+                echo "Test server should be dead.";
+            }
+            catch(Ec2Exception $ece) {
+                throw new ServerContainerException(
+                    "Failed to terminate instance: ".$ece->getMessage(),
+                    0,
+                    $ece
+                );
+            }
         }
 
         echo "\r\n";
@@ -45,37 +57,28 @@ class KillEC2TestInstances {
      */
     function    findTestInstances() {
         $testInstances = array();
-        $response = $this->ec2->describeInstances(array(
-//            'Filters' => array(
-//                array('Name' => 'instance-type', 'Values' => array('m1.small')),
-//            )
-        ));
 
-        $response = $response->toArray();
-        
-        $reservations = $response['Reservations'];
-        foreach ($reservations as $reservation) {
-            $instances = $reservation['Instances'];
-            foreach ($instances as $instance) {
+        try {
+            $response = $this->ec2->describeInstances(array(
+                'Filters' => array(
+                    //array('Name' => 'instance-type', 'Values' => array('m1.small')),
+                    array('Name' => 'tag-value', 'Key' => 'Name', 'Values' => array('Testing'))
+                )
+            ));
+        }
+        catch(Ec2Exception $ece) {
+            throw new ServerContainerException(
+                "Failed to describeInstances: ".$ece->getMessage(),
+                0,
+                $ece
+            );
+        }
 
-                $instanceName = '';
-                foreach ($instance['Tags'] as $tag) {
-                    if ($tag['Key'] == 'Name') {
-                        $instanceName = $tag['Value'];
-                    }
+        $data = $response->toArray();
 
-                    if ($tag['Key'] == 'Name' && $tag['Value'] == 'Testing') {
-                        $testInstances[] = $instance['InstanceId'];
-                    }
-                }
-
-                echo 'Instance Name: ' . $instanceName . PHP_EOL;
-                echo '---> State: ' . $instance['State']['Name'] . PHP_EOL;
-                echo '---> Instance ID: ' . $instance['InstanceId'] . PHP_EOL;
-                echo '---> Image ID: ' . $instance['ImageId'] . PHP_EOL;
-                echo '---> Private Dns Name: ' . $instance['PrivateDnsName'] . PHP_EOL;
-                echo '---> Instance Type: ' . $instance['InstanceType'] . PHP_EOL;
-                echo '---> Security Group: ' . $instance['SecurityGroups'][0]['GroupName'] . PHP_EOL;
+        foreach ($data['Reservations'] as $reservation) {
+            foreach ($reservation['Instances'] as $instance) {
+                $testInstances[] = $instance['InstanceId'];
             }
         }
 
