@@ -1,0 +1,18 @@
+[basereality]
+name=BaseReality packages
+baseurl=http://rpm.basereality.com/RPMS/$basearch
+enabled=1
+gpgcheck=0
+
+[basereality-noarch]
+name=BaseReality noarch packages
+baseurl=http://rpm.basereality.com/RPMS/noarch
+enabled=1
+gpgcheck=0
+
+
+[basereality-source]
+name=BaseReality packages
+baseurl=http://rpm.basereality.com/SRPM
+enabled=0
+gpgcheck=0
