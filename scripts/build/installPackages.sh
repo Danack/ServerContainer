@@ -1,7 +1,7 @@
 
 packages=( )
 
-packages+=("elementtree")
+
 packages+=("fftw")
 packages+=("ghostscript")
 packages+=("java-1.6.0-openjdk")
@@ -10,14 +10,17 @@ packages+=("libpng")
 packages+=("ImageMagick-2015_01_20")
 packages+=("imagick-2015_01_20")
 packages+=("libwebp-0.4.2")
-packages+=("meld3")
 packages+=("nginx-basereality-2014_11_05")
 packages+=("php-basereality-2014_10_24")
 packages+=("redis-basereality-2014_11_05")
-packages+=("setuptools")
 packages+=("strace")
 packages+=("supervisor")
 packages+=("yuicompressor")
+
+#packages+=("elementtree")
+#packages+=("meld3")
+#packages+=("setuptools")
+
 
 #this is an implode
 packageString=$( IFS=$' '; echo "${packages[*]}" )
