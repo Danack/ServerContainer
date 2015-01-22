@@ -165,7 +165,7 @@ class EC2Manager {
 
         echo "Tried succeeded";
 
-        $hostname = $this->getInstanceProperty($instanceID, 'hostname');
+        $hostname = $this->getInstanceProperty($instanceID, 'PublicDnsName');
         $sshCommand = "ssh -i ".AMAZON_EC2_SSH_KEY_PAIR_NAME.".pem $username@".$hostname."\r\n";
         $sshCommand .= "or ssh -i ".AMAZON_EC2_SSH_KEY_PAIR_NAME.".pem $username@test.basereality.com "."\r\n";
 
@@ -225,6 +225,7 @@ class EC2Manager {
             $response = $this->ec2->describeInstances(array(
                 'Filters' => array(
                     //array('Name' => 'instance-type', 'Values' => array('m1.small')),
+                    array('Name' => 'instance-state-name',  'Values' => array('running')),
                     array('Name' => 'tag-value', 'Key' => 'Name', 'Values' => array('Testing'))
                 )
             ));
@@ -342,10 +343,7 @@ END;
         $response = $this->ec2->describeAddresses();
 
         $addressItems = $response->toArray();
-        
-        var_dump($addressItems);
-        exit(0);
-        
+
 
         foreach($addressItems['addressesSet']['item'] as $address){
             $domain = 'unknown';

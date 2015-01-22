@@ -7,7 +7,7 @@ rpm -qai "*gpg*" | grep -q basereality
 
 if [ $? -ne 0 ]; 
     then
-        rpm --import /home/github/keys/basereality-GPG-KEY.public
+        rpm --import /home/servercontainer/data/basereality-GPG-KEY.public
         echo "adding it"
     else
         echo "basereality public key already added"
