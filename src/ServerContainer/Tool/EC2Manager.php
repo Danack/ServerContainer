@@ -163,8 +163,6 @@ class EC2Manager {
             throw new ServerContainerException("Failed to allocated IP address, ", 0, $e->getMessage());
         }
 
-        echo "Tried succeeded";
-
         $hostname = $this->getInstanceProperty($instanceID, 'PublicDnsName');
         $sshCommand = "ssh -i ".AMAZON_EC2_SSH_KEY_PAIR_NAME.".pem $username@".$hostname."\r\n";
         $sshCommand .= "or ssh -i ".AMAZON_EC2_SSH_KEY_PAIR_NAME.".pem $username@test.basereality.com "."\r\n";
@@ -179,7 +177,7 @@ class EC2Manager {
      * @return bool
      */
     function getInstanceProperty($instanceID, $propertyName){
-        echo "Attempting to get instance description for instance $instanceID ";
+        echo "Attempting to get instance description for instance $instanceID \n";
 
         // Get the hostname from a call to the DescribeImages operation.
         $response = $this->ec2->describeInstances([
@@ -293,7 +291,7 @@ class EC2Manager {
             if (defined($key) == false) {
                 throw new ServerContainerException("Key $key is not defined.");
             }
-            $searchReplaceArray["'%$key%'"] = constant($key); 
+            $searchReplaceArray["%$key%"] = constant($key); 
         }
 
         $searchArray = array_keys($searchReplaceArray);

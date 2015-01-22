@@ -47,7 +47,7 @@ chmod +x /home/servercontainer
 . ./build/configureIPTables.sh
 
 cd /home/servercontainer
-/usr/local/bin/php -d allow_url_fopen=1 lib/composer install
+su servercontainer -c "/usr/local/bin/php -d allow_url_fopen=1 lib/composer install"
 
 usermod -a -G www-data nginx
 
