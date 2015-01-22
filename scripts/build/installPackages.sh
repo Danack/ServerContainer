@@ -17,10 +17,6 @@ packages+=("strace")
 packages+=("supervisor")
 packages+=("yuicompressor")
 
-#packages+=("elementtree")
-#packages+=("meld3")
-#packages+=("setuptools")
-
 
 #this is an implode
 packageString=$( IFS=$' '; echo "${packages[*]}" )

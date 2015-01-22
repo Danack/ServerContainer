@@ -15,7 +15,6 @@ tar -xvf master.tgz
 
 cd ./ServerContainer-master/scripts
 
-
 . ./build/createGroup.sh
 
 users=()
@@ -47,13 +46,21 @@ chmod +x /home/servercontainer
 . ./build/installPackages.sh
 . ./build/configureIPTables.sh
 
+cd /home/servercontainer
+/usr/local/bin/php -d allow_url_fopen=1 lib/composer install
+
 usermod -a -G www-data nginx
 
+configFile="/home/clavis.php"
 
-#echo "before bootstrapEC2"
-#. ./bootstrapEC2.sh
-#echo "after bootstrapEC2"
-
-
-
-
+echo "<?php" > $configFile
+echo "" >> $configFile
+echo "define('FLICKR_KEY', '%FLICKR_KEY%');" >> $configFile
+echo "define('FLICKR_SECRET', '%FLICKR_SECRET%');" >> $configFile
+echo "" >> $configFile
+echo "define('GITHUB_ACCESS_TOKEN', '%GITHUB_ACCESS_TOKEN%');" >> $configFile
+echo "define('GITHUB_REPO_NAME', 'Danack/ServerContainer');" >> $configFile
+echo "" >> $configFile
+echo "define('AWS_SERVICES_KEY', '%AWS_SERVICES_KEY%');" >> $configFile
+echo "define('AWS_SERVICES_SECRET', '%AWS_SERVICES_SECRET%');" >> $configFile
+echo "" >> $configFile
