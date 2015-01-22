@@ -49,6 +49,13 @@ chmod +x /home/servercontainer
 cd /home/servercontainer
 su servercontainer -c "/usr/local/bin/php -d allow_url_fopen=1 lib/composer install"
 
+if [ $? -ne 0 ];then
+  errorCode=$?
+  echo "Composer install failed"
+  exit $errorCode
+fi
+
+
 usermod -a -G www-data nginx
 
 configFile="/home/clavis.php"
