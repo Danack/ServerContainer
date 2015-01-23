@@ -1,7 +1,7 @@
 
 packages=( )
 
-
+packages+=("composer-2015_01_23")
 packages+=("fftw")
 packages+=("ghostscript")
 packages+=("java-1.6.0-openjdk")
@@ -16,7 +16,6 @@ packages+=("redis-basereality-2014_11_05")
 packages+=("strace")
 packages+=("supervisor")
 packages+=("yuicompressor")
-
 
 #this is an implode
 packageString=$( IFS=$' '; echo "${packages[*]}" )
