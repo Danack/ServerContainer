@@ -1,40 +1,37 @@
 
-if [ "$#" -ne 5 ]; then
-    echo "Illegal number of parameters ${numParams}, should be deployPackage packagename sha"
+set -x #echo on
+
+if [ "$#" -ne 4 ]; then
+    echo "Illegal number of parameters ${numParams}, should be deployPackage projectName sha zipFilename archiveName"
     exit -1
 fi
 
-packageName=$1
-filename=$2
-deployScriptname=$3
-outputDirname=$4
-usename=$5
+projectName=$1
+sha=$2
+zipName=$3
+archiveName=$4
 
+sh ./scripts/build/createUser.sh $projectName
 
-#echo "packageName is ${packageName}"
-#echo "filename is ${filename}"
-#echo "deployScriptname is ${deployScriptname}"
-#echo "outputDirname is ${outputDirname}"
-#echo "usename is ${usename}"
+projectRootDir="/home/${projectName}"
+targetDir="${projectRootDir}/${sha}"
+linkCurrentDir="${projectRootDir}/current"
 
-targetDir="/home/${packageName}/"
-outputDir="${targetDir}/"
 
 mkdir -p $targetDir
-#echo "targetDir is ${targetDir}"
-tar -xf ${filename} -C $targetDir
+tar -xf ${zipName} -C $targetDir --strip-components=1
 
-deployScriptDir="${targetDir}/${outputDirname}"
+cd $targetDir
 
-cd $deployScriptDir
-echo  "Now in: "
-pwd
+cwd=$(pwd)
+echo  "Now in: ${cwd}"
 
-sh  ./${deployScriptname}
+chown -R ${projectName}:www-data $targetDir
 
+sh ./scripts/deploy.sh centos
 
-# echo "intahwebz" | passwd --stdin $createWebUser
-#nginx requires the directory tree to be executable
-#chmod +x /home/intahwebz/
+ln -sfn $targetDir $linkCurrentDir
 
-
+/etc/init.d/supervisord restart
+/etc/init.d/php-fpm restart
+nginx -s reload

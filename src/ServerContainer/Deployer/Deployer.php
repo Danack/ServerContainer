@@ -5,7 +5,10 @@ namespace ServerContainer\Deployer;
 use GithubService\GithubArtaxService\GithubService;
 use Amp\Artax\Client as ArtaxClient;
 use Amp\Artax\Response;
-use ServerContainer\ServerContainerException;
+
+use ArtaxServiceBuilder\Oauth2Token;
+
+// composer config -g github-oauth.github.com <oauthtoken>
 
 class Deployer {
 
@@ -19,55 +22,54 @@ class Deployer {
     private $artaxClient;
     
     private $tempDirectory;
-    
+
+    /**
+     * @var Oauth2Token
+     */
+    private $oauthToken;
     
     function __construct(
         GithubService $githubService,
         ArtaxClient $artaxClient,
+        Oauth2Token $oauthToken,
         $tempDirectory,
         $cacheDirectory) {
         $this->githubService = $githubService;
         $this->appConfigList = [
-            ['danack', 'Imagick-demos', 'master', 'version' => 'latest' ]
+            'imagickdemos' => [ 'danack', 'Imagick-demos', 'master', 'version' => 'latest' ],
+            'intahwebz'    => [ 'danack', 'intahwebz', 'master', 'version' => 'latest' ],
         ];
 
         $this->artaxClient = $artaxClient;
         $this->tempDirectory = $tempDirectory;
         $this->cacheDirectory = $cacheDirectory;
+        $this->oauthToken = $oauthToken;
     }
 
+    
     /**
      * 
      */
     function run() {
-        foreach ($this->appConfigList as $appConfig) {
+        foreach ($this->appConfigList as $projectName => $appConfig) {
+            set_time_limit(500);
+
             $author = $appConfig[0];
             $packageName = $appConfig[1];
+
             $commit = $this->findAppToUpdate($author, $packageName);
             if ($commit) {
-                $this->downloadPackage($author, $packageName, $commit);
-
-                $unpackedDirname = sprintf(
-                    "%s-%s",
-                    $packageName,
-                    $commit->sha
-                );
-
-                $username = 'imagickdemo';
-
+                $archiveFilename = $this->downloadPackage($author, $packageName, $commit);
                 $command = sprintf(
-                    "sh ./scripts/deployPackage.sh %s_%s ./var/cache/%s_%s_%s.tar.gz %s %s %s",
-                    $author,
-                    $packageName,
-                    $author,
-                    $packageName,
+                    "sh ./scripts/deploy/deployPackage.sh %s %s %s %s",
+                    $projectName,
                     $commit->sha,
-                    "./scripts/deploy.sh",
-                    $unpackedDirname,
-                    $username
+                    $archiveFilename,
+                    $packageName
                 );
 
                 echo "need to run command: \n".$command."\n";
+                system($command);
             }
         }
     }
@@ -79,7 +81,7 @@ class Deployer {
      */
     function findAppToUpdate($author, $packageName) {
         $operation = $this->githubService->listRepoCommits(
-            null,
+            $this->oauthToken,
             $author,
             $packageName
         );
@@ -98,15 +100,15 @@ class Deployer {
      * @param \GithubService\Model\Commit $commit
      */
     function downloadPackage($author, $packageName, \GithubService\Model\Commit $commit) {
-        $blobType = 'tar.gz'; //= 'zip';
-        $downloadURL = sprintf(
-            "https://github.com/%s/%s/archive/%s.%s",
+        $blobType = 'tar.gz';
+
+        $archiveOperation = $this->githubService->getArchiveLink(
+            $this->oauthToken,
             $author,
             $packageName,
-            $commit->sha,
-            $blobType
+            $commit->sha
         );
-
+        
         /** @var $response Response */
         $archiveFilename = sprintf(
             "%s/%s_%s_%s.%s",
@@ -119,18 +121,11 @@ class Deployer {
 
         if (file_exists($archiveFilename)) {
             //throw new ServerContainerException("Archive file $archiveFilename already exists. Cannot download over it.");
-            //Already exists
-            return $archiveFilename; 
-        }
-        
-        $promise = $this->artaxClient->request($downloadURL);
-        $response = \Amp\wait($promise);
-
-        if ($response->getStatus() !== 200) {
-            throw new ServerContainerException("Failed to download archive from: $downloadURL status was ".$response->getStatus());
+            return $archiveFilename; //Already exists 
         }
 
-        file_put_contents($archiveFilename, $response->getBody());
+        $filebody = $archiveOperation->execute();
+        file_put_contents($archiveFilename, $filebody);
 
         return $archiveFilename;
     }

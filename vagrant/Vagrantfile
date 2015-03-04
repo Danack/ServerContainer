@@ -8,9 +8,7 @@ Vagrant.configure("2") do |config|
     config.vm.box_url = "http://developer.nrel.gov/downloads/vagrant-boxes/CentOS-6.4-x86_64-v20130427.box"
 
     config.vm.provider :virtualbox do |vb|
-    
         vb.name = "servercontainer"
-    
         vb.memory = 1024
         vb.cpus = 1
     
@@ -19,7 +17,7 @@ Vagrant.configure("2") do |config|
         # vb.customize ["modifyvm", :id, "--cpus", "2" ]
         vb.customize ["modifyvm", :id, "--hwvirtex", "on" ]
         vb.customize ["modifyvm", :id, "--ioapic", "on"]
-        vb.customize ["modifyvm", :id, "--memory", "2048"]
+        vb.customize ["modifyvm", :id, "--memory", "768"]
         
         # Enabling DNS proxy in NAT mode
         vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
@@ -30,6 +28,9 @@ Vagrant.configure("2") do |config|
         vb.customize ["modifyvm", :id, "--usb", "off" ]
         vb.customize ["modifyvm", :id, "--usbehci", "off" ]
         vb.customize ["modifyvm", :id, "--vtxvpid", "on" ]
+        
+        # needs new version.
+        # vb.customize ["modifyvm", :id, "--timesync-set-threshold", "15000" ]
 
         # nmi_watchdog=0
         #v.customize ["modifyvm", :id, "--cpuexecutioncap", "50"]
@@ -39,17 +40,25 @@ Vagrant.configure("2") do |config|
     # sudo ipfw add 100 fwd 127.0.0.1,8080 tcp from any to any 80 in
     # sudo ipfw add 100 fwd 127.0.0.1,8443 tcp from any to any 443 in
 
-    #config.vm.network :private_network, ip: "192.168.57.2"
+    
 
     #Supervisord
     config.vm.network :forwarded_port, guest: 9002, host: 9002
+
+
+    config.vm.network :private_network, ip: "192.168.57.2"
+
     #websites
     config.vm.network :forwarded_port, guest: 80, host: 8080
     config.vm.network :forwarded_port, guest: 8000, host: 8000
     
     config.vm.hostname = "servercontainer.test" 
+    
+     imagick.test
+    
   
-    config.vm.synced_folder "/documents/projects/github", "/home/github/"
+    config.vm.synced_folder "/documents/projects/github", "/home/github/", mount_options: ["dmode=777,fmode=777"]
+    
     config.vm.synced_folder "/documents/projects/svn", "/home/svn/"
     config.vm.synced_folder "/temp", "/temp"
     config.vm.provision :shell, :path => "../scripts/bootstrapVagrant.sh", :args => "1"

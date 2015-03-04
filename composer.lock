@@ -4,24 +4,28 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e0f5b124c52f0762a9606031d7847e08",
+    "hash": "0a2c90daae409ae7e2f0cb1a90eff80b",
     "packages": [
         {
             "name": "amphp/amp",
-            "version": "v0.15.0",
+            "version": "v0.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/amphp/amp.git",
-                "reference": "c21068fc946f5bfd692297e927773a732f205279"
+                "reference": "446e09a95d8fe5d4368802f7b126095c5e54415c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amphp/amp/zipball/c21068fc946f5bfd692297e927773a732f205279",
-                "reference": "c21068fc946f5bfd692297e927773a732f205279",
+                "url": "https://api.github.com/repos/amphp/amp/zipball/446e09a95d8fe5d4368802f7b126095c5e54415c",
+                "reference": "446e09a95d8fe5d4368802f7b126095c5e54415c",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.4.0"
+            },
+            "suggest": {
+                "pecl/libevent": "Extension for libevent backends (high performance use cases).",
+                "php-uv": "Extension for libuv backends (high performance use cases)."
             },
             "type": "library",
             "extra": {
@@ -59,7 +63,7 @@
                 "non-blocking",
                 "promise"
             ],
-            "time": "2014-12-08 16:52:09"
+            "time": "2015-02-18 14:59:48"
         },
         {
             "name": "amphp/artax",
@@ -67,18 +71,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/amphp/artax.git",
-                "reference": "3e4c07759064c39ca7a8f9c1b4c9742e9b5143fe"
+                "reference": "c628bd13ea1ab077cfa5be6e1c4185fc9317b3fa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amphp/artax/zipball/3e4c07759064c39ca7a8f9c1b4c9742e9b5143fe",
-                "reference": "3e4c07759064c39ca7a8f9c1b4c9742e9b5143fe",
+                "url": "https://api.github.com/repos/amphp/artax/zipball/c628bd13ea1ab077cfa5be6e1c4185fc9317b3fa",
+                "reference": "c628bd13ea1ab077cfa5be6e1c4185fc9317b3fa",
                 "shasum": ""
             },
             "require": {
-                "amphp/amp": "~0.15.0",
+                "amphp/amp": "~0.16.0",
                 "php": ">=5.4.0",
-                "rdlowrey/nbsock": "~0.5.0"
+                "rdlowrey/nbsock": "~0.6.0"
             },
             "type": "library",
             "extra": {
@@ -112,25 +116,25 @@
                 "parallel",
                 "rest"
             ],
-            "time": "2015-01-05 19:28:04"
+            "time": "2015-02-18 17:02:19"
         },
         {
             "name": "amphp/dns",
-            "version": "v0.4.0",
+            "version": "v0.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/amphp/dns.git",
-                "reference": "aaf718e1284d420f52545ee1cbc631b893141da8"
+                "reference": "e4578f504a855078b339e3a4d6da7f4e1f8f4723"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amphp/dns/zipball/aaf718e1284d420f52545ee1cbc631b893141da8",
-                "reference": "aaf718e1284d420f52545ee1cbc631b893141da8",
+                "url": "https://api.github.com/repos/amphp/dns/zipball/e4578f504a855078b339e3a4d6da7f4e1f8f4723",
+                "reference": "e4578f504a855078b339e3a4d6da7f4e1f8f4723",
                 "shasum": ""
             },
             "require": {
-                "amphp/amp": "~0.15.0",
-                "daverandom/libdns": "~0.2",
+                "amphp/amp": "~0.16.0",
+                "daverandom/libdns": "~1.0",
                 "php": ">=5.4.0"
             },
             "require-dev": {
@@ -165,20 +169,20 @@
                 "dns",
                 "resolve"
             ],
-            "time": "2014-12-08 17:07:24"
+            "time": "2015-02-18 16:18:40"
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "2.7.14",
+            "version": "2.7.20",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "1ec3fb885a891d337540dcd26e33d01ed7f82f1a"
+                "reference": "2c9d93fbe680f64a84f5877209904f414d5cf92f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/1ec3fb885a891d337540dcd26e33d01ed7f82f1a",
-                "reference": "1ec3fb885a891d337540dcd26e33d01ed7f82f1a",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/2c9d93fbe680f64a84f5877209904f414d5cf92f",
+                "reference": "2c9d93fbe680f64a84f5877209904f414d5cf92f",
                 "shasum": ""
             },
             "require": {
@@ -232,27 +236,28 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2015-01-09 19:31:57"
+            "time": "2015-02-24 00:04:06"
         },
         {
             "name": "danack/artaxservicebuilder",
-            "version": "0.3.1",
+            "version": "0.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Danack/ArtaxServiceBuilder.git",
-                "reference": "829e2d31b639966e60a42834cfd6aa76f708a565"
+                "reference": "2db70251d131e4b947746829759182dd570c328f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Danack/ArtaxServiceBuilder/zipball/829e2d31b639966e60a42834cfd6aa76f708a565",
-                "reference": "829e2d31b639966e60a42834cfd6aa76f708a565",
+                "url": "https://api.github.com/repos/Danack/ArtaxServiceBuilder/zipball/2db70251d131e4b947746829759182dd570c328f",
+                "reference": "2db70251d131e4b947746829759182dd570c328f",
                 "shasum": ""
             },
             "require": {
-                "danack/danack-code": ">=2.4.4"
+                "danack/danack-code": "~2.4.4"
             },
             "require-dev": {
                 "danack/auryn": "~0.9.5",
+                "danack/danackhttp2": "~1.2.0",
                 "fzaninotto/faker": "*",
                 "mockery/mockery": "0.9.1",
                 "phpunit/phpunit": "4.1.3"
@@ -264,21 +269,16 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
-            "time": "2014-11-13 11:10:18"
+            "time": "2015-01-22 18:31:19"
         },
         {
             "name": "danack/auryn",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Danack/Auryn.git",
-                "reference": "2471c19ecf3f9d4e2a2dfc949430fc290d67270b"
-            },
+            "version": "0.14.2",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Danack/Auryn/zipball/2471c19ecf3f9d4e2a2dfc949430fc290d67270b",
-                "reference": "2471c19ecf3f9d4e2a2dfc949430fc290d67270b",
-                "shasum": ""
+                "url": "http://satis.basereality.com/packages/Danack/Auryn/Danack_Auryn_0.14.2.zip",
+                "reference": null,
+                "shasum": "7a5d0b179b7e40d0cda3f87bcb9fa6a2100d7ceb"
             },
             "require": {
                 "php": ">=5.3.0"
@@ -323,25 +323,20 @@
                 "dependency injection",
                 "dic",
                 "ioc"
-            ],
-            "support": {
-                "source": "https://github.com/Danack/Auryn/tree/0.14.2",
-                "issues": "https://github.com/Danack/Auryn/issues"
-            },
-            "time": "2014-10-11 00:30:55"
+            ]
         },
         {
             "name": "danack/console",
-            "version": "v2.6.0",
+            "version": "v2.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Danack/Console.git",
-                "reference": "c69267bda73a2c896436605e18a9d4ff808d5ef3"
+                "reference": "0224aa0b158117fc696d5d8c5238662e09137028"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Danack/Console/zipball/c69267bda73a2c896436605e18a9d4ff808d5ef3",
-                "reference": "c69267bda73a2c896436605e18a9d4ff808d5ef3",
+                "url": "https://api.github.com/repos/Danack/Console/zipball/0224aa0b158117fc696d5d8c5238662e09137028",
+                "reference": "0224aa0b158117fc696d5d8c5238662e09137028",
                 "shasum": ""
             },
             "require": {
@@ -388,7 +383,7 @@
                 "cli",
                 "console"
             ],
-            "time": "2014-09-22 17:51:49"
+            "time": "2015-01-23 14:07:48"
         },
         {
             "name": "danack/danack-code",
@@ -456,21 +451,21 @@
         },
         {
             "name": "danack/githubartaxservice",
-            "version": "dev-master",
+            "version": "0.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Danack/GithubArtaxService.git",
-                "reference": "a380bc1c773ca1ef790dfad36518cf8b24be5e07"
+                "reference": "d6d305848b5d5b4a6e8d4e9ce309ae9c64a423bd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Danack/GithubArtaxService/zipball/a380bc1c773ca1ef790dfad36518cf8b24be5e07",
-                "reference": "a380bc1c773ca1ef790dfad36518cf8b24be5e07",
+                "url": "https://api.github.com/repos/Danack/GithubArtaxService/zipball/d6d305848b5d5b4a6e8d4e9ce309ae9c64a423bd",
+                "reference": "d6d305848b5d5b4a6e8d4e9ce309ae9c64a423bd",
                 "shasum": ""
             },
             "require": {
                 "amphp/artax": "dev-master",
-                "danack/artaxservicebuilder": "~0.3.1",
+                "danack/artaxservicebuilder": "0.3.2",
                 "danack/danack-code": ">=2.4.5",
                 "danack/danackhttp2": ">=1.2.0"
             },
@@ -488,16 +483,21 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
-            "time": "2015-01-12 14:50:17"
+            "time": "2015-03-01 19:59:57"
         },
         {
             "name": "daverandom/libdns",
-            "version": "0.2.1",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/DaveRandom/LibDNS.git",
+                "reference": "1f4c7fc8f187c8e56c5df39b28f4689c65f5077f"
+            },
             "dist": {
                 "type": "zip",
-                "url": "http://satis.basereality.com/packages/DaveRandom/LibDNS/DaveRandom_LibDNS_v0.2.1.zip",
-                "reference": null,
-                "shasum": "0b1a9075f29c11ce7f00169e598d4a1cc944a137"
+                "url": "https://api.github.com/repos/DaveRandom/LibDNS/zipball/1f4c7fc8f187c8e56c5df39b28f4689c65f5077f",
+                "reference": "1f4c7fc8f187c8e56c5df39b28f4689c65f5077f",
+                "shasum": ""
             },
             "require": {
                 "php": ">=5.4.0"
@@ -508,6 +508,7 @@
                     "LibDNS": "src"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -515,9 +516,7 @@
             "keywords": [
                 "dns"
             ],
-            "support": {
-                "issues": "https://github.com/DaveRandom/LibDNS/issues"
-            }
+            "time": "2015-02-18 11:30:51"
         },
         {
             "name": "guzzle/guzzle",
@@ -613,19 +612,37 @@
         },
         {
             "name": "intahwebz/configurator",
-            "version": "0.1.1",
+            "version": "0.2.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Danack/Configurator.git",
+                "reference": "c76eba186dd8277542573520bb2199b457ec84b8"
+            },
             "dist": {
                 "type": "zip",
-                "url": "http://satis.basereality.com/packages/Danack/Configurator/Danack_Configurator_0.1.1.zip",
-                "reference": null,
-                "shasum": "91f3684e68d704e5003c89e752bb67a36371410c"
+                "url": "https://api.github.com/repos/Danack/Configurator/zipball/c76eba186dd8277542573520bb2199b457ec84b8",
+                "reference": "c76eba186dd8277542573520bb2199b457ec84b8",
+                "shasum": ""
             },
+            "require": {
+                "danack/auryn": "^0.14.0",
+                "danack/console": "^2.6.1"
+            },
+            "require-dev": {
+                "mikey179/vfsstream": "^1.4.0",
+                "phpunit/phpunit": "4.4.5"
+            },
+            "bin": [
+                "bin/configurate",
+                "bin/fpmconv"
+            ],
             "type": "library",
             "autoload": {
                 "psr-0": {
-                    "Intahwebz\\Configurator": "src/"
+                    "Configurator": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -636,30 +653,31 @@
                     "homepage": "http://www.basereality.com"
                 }
             ],
-            "description": "Generates config files from PHP based templates and PHP style config files..",
+            "description": "Generates config files from PHP based config files and PHP and JSON data files.",
             "keywords": [
-                "UTF-8",
                 "config",
                 "php",
-                "tool"
-            ]
+                "tool",
+                "utf-8"
+            ],
+            "time": "2015-02-27 20:25:28"
         },
         {
             "name": "rdlowrey/nbsock",
-            "version": "v0.5.0",
+            "version": "v0.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rdlowrey/nbsock.git",
-                "reference": "ac6e021f32e7960a17530cdf16cb98c932497695"
+                "reference": "a13e3f22a3446311a69ab7e4b128c07711db508a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rdlowrey/nbsock/zipball/ac6e021f32e7960a17530cdf16cb98c932497695",
-                "reference": "ac6e021f32e7960a17530cdf16cb98c932497695",
+                "url": "https://api.github.com/repos/rdlowrey/nbsock/zipball/a13e3f22a3446311a69ab7e4b128c07711db508a",
+                "reference": "a13e3f22a3446311a69ab7e4b128c07711db508a",
                 "shasum": ""
             },
             "require": {
-                "amphp/amp": "~0.15.0",
+                "amphp/amp": "~0.16.0",
                 "amphp/dns": "~0.4.0",
                 "php": ">=5.4.0"
             },
@@ -694,21 +712,21 @@
                 "tcp",
                 "tls"
             ],
-            "time": "2014-12-08 17:19:17"
+            "time": "2015-02-18 16:23:30"
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v2.6.3",
+            "version": "v2.6.4",
             "target-dir": "Symfony/Component/EventDispatcher",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/EventDispatcher.git",
-                "reference": "40ff70cadea3785d83cac1c8309514b36113064e"
+                "reference": "f75989f3ab2743a82fe0b03ded2598a2b1546813"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/40ff70cadea3785d83cac1c8309514b36113064e",
-                "reference": "40ff70cadea3785d83cac1c8309514b36113064e",
+                "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/f75989f3ab2743a82fe0b03ded2598a2b1546813",
+                "reference": "f75989f3ab2743a82fe0b03ded2598a2b1546813",
                 "shasum": ""
             },
             "require": {
@@ -752,7 +770,7 @@
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "http://symfony.com",
-            "time": "2015-01-05 14:28:40"
+            "time": "2015-02-01 16:10:57"
         }
     ],
     "packages-dev": [
@@ -812,16 +830,16 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "2.0.14",
+            "version": "2.0.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "ca158276c1200cc27f5409a5e338486bc0b4fc94"
+                "reference": "34cc484af1ca149188d0d9e91412191e398e0b67"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/ca158276c1200cc27f5409a5e338486bc0b4fc94",
-                "reference": "ca158276c1200cc27f5409a5e338486bc0b4fc94",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/34cc484af1ca149188d0d9e91412191e398e0b67",
+                "reference": "34cc484af1ca149188d0d9e91412191e398e0b67",
                 "shasum": ""
             },
             "require": {
@@ -834,7 +852,7 @@
             },
             "require-dev": {
                 "ext-xdebug": ">=2.1.4",
-                "phpunit/phpunit": "~4.1"
+                "phpunit/phpunit": "~4"
             },
             "suggest": {
                 "ext-dom": "*",
@@ -853,9 +871,6 @@
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",
-            "include-path": [
-                ""
-            ],
             "license": [
                 "BSD-3-Clause"
             ],
@@ -873,7 +888,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2014-12-26 13:28:33"
+            "time": "2015-01-24 10:06:35"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -1001,12 +1016,17 @@
         },
         {
             "name": "phpunit/php-token-stream",
-            "version": "1.3.0",
+            "version": "1.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/php-token-stream.git",
+                "reference": "db32c18eba00b121c145575fcbcd4d4d24e6db74"
+            },
             "dist": {
                 "type": "zip",
-                "url": "http://satis.basereality.com/packages/sebastianbergmann/php-token-stream/sebastianbergmann_php-token-stream_1.3.0.zip",
-                "reference": null,
-                "shasum": "71ba35dd8b30b9440c23152781727d182e780fa5"
+                "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/db32c18eba00b121c145575fcbcd4d4d24e6db74",
+                "reference": "db32c18eba00b121c145575fcbcd4d4d24e6db74",
+                "shasum": ""
             },
             "require": {
                 "ext-tokenizer": "*",
@@ -1018,7 +1038,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.3-dev"
+                    "dev-master": "1.4-dev"
                 }
             },
             "autoload": {
@@ -1026,6 +1046,7 @@
                     "src/"
                 ]
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -1040,18 +1061,21 @@
             "keywords": [
                 "tokenizer"
             ],
-            "support": {
-                "issues": "https://github.com/sebastianbergmann/php-token-stream/issues"
-            }
+            "time": "2015-01-17 09:51:32"
         },
         {
             "name": "phpunit/phpunit",
-            "version": "4.1.3",
+            "version": "4.4.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/phpunit.git",
+                "reference": "2e8580deebb7d1ac92ac878595e6bffe01069c2a"
+            },
             "dist": {
                 "type": "zip",
-                "url": "http://satis.basereality.com/packages/sebastianbergmann/phpunit/sebastianbergmann_phpunit_4.1.3.zip",
-                "reference": null,
-                "shasum": "3570ceb5ec259005098dfde1834dad260ede1d7e"
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/2e8580deebb7d1ac92ac878595e6bffe01069c2a",
+                "reference": "2e8580deebb7d1ac92ac878595e6bffe01069c2a",
+                "shasum": ""
             },
             "require": {
                 "ext-dom": "*",
@@ -1061,14 +1085,16 @@
                 "ext-spl": "*",
                 "php": ">=5.3.3",
                 "phpunit/php-code-coverage": "~2.0",
-                "phpunit/php-file-iterator": "~1.3.1",
+                "phpunit/php-file-iterator": "~1.3.2",
                 "phpunit/php-text-template": "~1.2",
                 "phpunit/php-timer": "~1.0.2",
-                "phpunit/phpunit-mock-objects": "~2.1",
+                "phpunit/phpunit-mock-objects": "~2.3",
                 "sebastian/comparator": "~1.0",
                 "sebastian/diff": "~1.1",
-                "sebastian/environment": "~1.0",
-                "sebastian/exporter": "~1.0",
+                "sebastian/environment": "~1.1",
+                "sebastian/exporter": "~1.1",
+                "sebastian/global-state": "~1.0",
+                "sebastian/recursion-context": "~1.0",
                 "sebastian/version": "~1.0",
                 "symfony/yaml": "~2.0"
             },
@@ -1081,7 +1107,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.1.x-dev"
+                    "dev-master": "4.4.x-dev"
                 }
             },
             "autoload": {
@@ -1089,19 +1115,7 @@
                     "src/"
                 ]
             },
-            "autoload-dev": {
-                "classmap": [
-                    "tests/"
-                ],
-                "files": [
-                    "src/Framework/Assert/Functions.php",
-                    "tests/_files/CoveredFunction.php"
-                ]
-            },
-            "include-path": [
-                "",
-                "../../symfony/yaml/"
-            ],
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -1113,16 +1127,13 @@
                 }
             ],
             "description": "The PHP Unit Testing framework.",
-            "homepage": "http://www.phpunit.de/",
+            "homepage": "https://phpunit.de/",
             "keywords": [
                 "phpunit",
                 "testing",
                 "xunit"
             ],
-            "support": {
-                "issues": "https://github.com/sebastianbergmann/phpunit/issues",
-                "irc": "irc://irc.freenode.net/phpunit"
-            }
+            "time": "2015-01-27 16:06:15"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -1183,25 +1194,25 @@
         },
         {
             "name": "sebastian/comparator",
-            "version": "1.1.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/comparator.git",
-                "reference": "c484a80f97573ab934e37826dba0135a3301b26a"
+                "reference": "1dd8869519a225f7f2b9eb663e225298fade819e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/c484a80f97573ab934e37826dba0135a3301b26a",
-                "reference": "c484a80f97573ab934e37826dba0135a3301b26a",
+                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/1dd8869519a225f7f2b9eb663e225298fade819e",
+                "reference": "1dd8869519a225f7f2b9eb663e225298fade819e",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3",
-                "sebastian/diff": "~1.1",
-                "sebastian/exporter": "~1.0"
+                "sebastian/diff": "~1.2",
+                "sebastian/exporter": "~1.2"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.1"
+                "phpunit/phpunit": "~4.4"
             },
             "type": "library",
             "extra": {
@@ -1243,7 +1254,7 @@
                 "compare",
                 "equality"
             ],
-            "time": "2014-11-16 21:32:38"
+            "time": "2015-01-29 16:28:08"
         },
         {
             "name": "sebastian/diff",
@@ -1342,18 +1353,140 @@
         },
         {
             "name": "sebastian/exporter",
-            "version": "1.0.2",
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/exporter.git",
+                "reference": "84839970d05254c73cde183a721c7af13aede943"
+            },
             "dist": {
                 "type": "zip",
-                "url": "http://satis.basereality.com/packages/sebastianbergmann/exporter/sebastianbergmann_exporter_1.0.2.zip",
-                "reference": null,
-                "shasum": "5aef492106835f6c62067d55ef3e8ca22db8b3e4"
+                "url": "https://api.github.com/repos/sebastianbergmann/exporter/zipball/84839970d05254c73cde183a721c7af13aede943",
+                "reference": "84839970d05254c73cde183a721c7af13aede943",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "sebastian/recursion-context": "~1.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.4"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.2.x-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Jeff Welch",
+                    "email": "whatthejeff@gmail.com"
+                },
+                {
+                    "name": "Volker Dusch",
+                    "email": "github@wallbash.com"
+                },
+                {
+                    "name": "Bernhard Schussek",
+                    "email": "bschussek@2bepublished.at"
+                },
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de"
+                },
+                {
+                    "name": "Adam Harvey",
+                    "email": "aharvey@php.net"
+                }
+            ],
+            "description": "Provides the functionality to export PHP variables for visualization",
+            "homepage": "http://www.github.com/sebastianbergmann/exporter",
+            "keywords": [
+                "export",
+                "exporter"
+            ],
+            "time": "2015-01-27 07:23:06"
+        },
+        {
+            "name": "sebastian/global-state",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/global-state.git",
+                "reference": "c7428acdb62ece0a45e6306f1ae85e1c05b09c01"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/global-state/zipball/c7428acdb62ece0a45e6306f1ae85e1c05b09c01",
+                "reference": "c7428acdb62ece0a45e6306f1ae85e1c05b09c01",
+                "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.0"
+                "phpunit/phpunit": "~4.2"
+            },
+            "suggest": {
+                "ext-uopz": "*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de"
+                }
+            ],
+            "description": "Snapshotting of global state",
+            "homepage": "http://www.github.com/sebastianbergmann/global-state",
+            "keywords": [
+                "global state"
+            ],
+            "time": "2014-10-06 09:23:50"
+        },
+        {
+            "name": "sebastian/recursion-context",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/recursion-context.git",
+                "reference": "3989662bbb30a29d20d9faa04a846af79b276252"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/recursion-context/zipball/3989662bbb30a29d20d9faa04a846af79b276252",
+                "reference": "3989662bbb30a29d20d9faa04a846af79b276252",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.4"
             },
             "type": "library",
             "extra": {
@@ -1366,37 +1499,27 @@
                     "src/"
                 ]
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
             "authors": [
                 {
-                    "name": "Sebastian Bergmann",
-                    "email": "sebastian@phpunit.de"
-                },
-                {
                     "name": "Jeff Welch",
                     "email": "whatthejeff@gmail.com"
                 },
                 {
-                    "name": "Volker Dusch",
-                    "email": "github@wallbash.com"
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de"
                 },
                 {
                     "name": "Adam Harvey",
                     "email": "aharvey@php.net"
-                },
-                {
-                    "name": "Bernhard Schussek",
-                    "email": "bschussek@2bepublished.at"
                 }
             ],
-            "description": "Provides the functionality to export PHP variables for visualization",
-            "homepage": "http://www.github.com/sebastianbergmann/exporter",
-            "keywords": [
-                "export",
-                "exporter"
-            ]
+            "description": "Provides functionality to recursively process PHP variables",
+            "homepage": "http://www.github.com/sebastianbergmann/recursion-context",
+            "time": "2015-01-24 09:48:32"
         },
         {
             "name": "sebastian/version",
@@ -1435,17 +1558,17 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v2.6.3",
+            "version": "v2.6.4",
             "target-dir": "Symfony/Component/Yaml",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Yaml.git",
-                "reference": "82462a90848a52c2533aa6b598b107d68076b018"
+                "reference": "60ed7751671113cf1ee7d7778e691642c2e9acd8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Yaml/zipball/82462a90848a52c2533aa6b598b107d68076b018",
-                "reference": "82462a90848a52c2533aa6b598b107d68076b018",
+                "url": "https://api.github.com/repos/symfony/Yaml/zipball/60ed7751671113cf1ee7d7778e691642c2e9acd8",
+                "reference": "60ed7751671113cf1ee7d7778e691642c2e9acd8",
                 "shasum": ""
             },
             "require": {
@@ -1478,22 +1601,14 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "http://symfony.com",
-            "time": "2015-01-03 15:33:07"
+            "time": "2015-01-25 04:39:26"
         }
     ],
-    "aliases": [
-
-    ],
+    "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "danack/auryn": 20,
-        "danack/githubartaxservice": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
-    "platform": [
-
-    ],
-    "platform-dev": [
-
-    ]
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
 }

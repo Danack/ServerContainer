@@ -1,18 +1,28 @@
 
-packages=( )
 
-packages+=("composer-2015_01_23")
+
+packages=()
+#packages+=("composer-2015_01_24")
+packages+=("composer-2015_02_28")
 packages+=("fftw")
 packages+=("ghostscript")
 packages+=("java-1.6.0-openjdk")
 packages+=("libjpeg-turbo")
 packages+=("libpng")
 packages+=("ImageMagick-2015_01_20")
-packages+=("imagick-2015_01_20")
+packages+=("imagick-2015_02_25")
+# packages+=("php-basereality-2015_02_01-5.6.2")
+packages+=("php-basereality-2015_02_15-5.6.5")
+#packages+=("imagick7-2015_01_30")
+#packages+=("php7-basereality-2015_01_30")
+#packages+=("mysql");
+#packages+=("mysql-server");
+packages+=("mysql-community-client");
+packages+=("mysql-community-server");
 packages+=("libwebp-0.4.2")
-packages+=("nginx-basereality-2014_11_05")
-packages+=("php-basereality-2014_10_24")
+packages+=("nginx-basereality-2015_01_25")
 packages+=("redis-basereality-2014_11_05")
+packages+=("setuptools")
 packages+=("strace")
 packages+=("supervisor")
 packages+=("yuicompressor")
@@ -23,3 +33,18 @@ packageString=$( IFS=$' '; echo "${packages[*]}" )
 echo "Installing packages $packageString"
 
 yum -y install $packageString
+
+
+environment="centos_guest"
+if [ "$#" -ge 1 ]; then
+    environment=$1
+fi
+
+
+#mysql --defaults-extra-file=/path/to/config.cnf
+#[client]
+#user = whatever
+#password = whatever
+#host = whatever
+
+

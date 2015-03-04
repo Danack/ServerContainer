@@ -6,17 +6,28 @@ use Danack\Console\Formatter\OutputFormatterStyle;
 use Danack\Console\Helper\QuestionHelper;
 use Danack\Console\Application;
 use Danack\Console\Command\Command;
-use Danack\Console\Input\InputArgument;
 use ServerContainer\ServerContainerException;
-
+use ArtaxServiceBuilder\Oauth2Token;
 use Aws\Ec2\Ec2Client;
 
 require_once(__DIR__.'/../vendor/autoload.php');
 require_once __DIR__.'/../../clavis.php';
 
-//if (!ini_get('allow_url_fopen')) {
-//    echo "allow_url_fopen is not enabled, things will probably break.";
-//}
+
+function echoStackTrace($traceParts) {
+    foreach ($traceParts as $tracePart) {
+        if (isset($tracePart['file']) && isset($tracePart['line'])) {
+            echo $tracePart['file']." ".$tracePart['line']."\n";
+        }
+        else if (isset($tracePart["function"])) {
+            echo $tracePart["function"]."\n";
+        }
+        else {
+            //var_dump($tracePart);
+            echo "...\n";
+        }
+    }
+}
 
 function createClient($region) {
     $config = array();
@@ -25,6 +36,16 @@ function createClient($region) {
     $config['region'] = $region;
 
     return Ec2Client::factory($config);
+}
+
+
+function getOauthToken() {
+    static $oauthToken = null;
+    if ($oauthToken == null) {
+        $oauthToken = new Oauth2Token(GITHUB_ACCESS_TOKEN);
+    }
+
+    return $oauthToken;
 }
 
 /**
@@ -36,8 +57,10 @@ function setupCLIProvider() {
     $aliases = [
         'ArtaxServiceBuilder\ResponseCache' =>
         //'ArtaxServiceBuilder\ResponseCache\NullResponseCache'
-        'ArtaxServiceBuilder\ResponseCache\FileResponseCache'
+        'ArtaxServiceBuilder\ResponseCache\FileResponseCache',
     ];
+
+    $provider->delegate('ArtaxServiceBuilder\Oauth2Token', 'getOauthToken');
     
     $params = [
         'cacheDirectory' => realpath(__DIR__."/../var/cache"),
@@ -50,7 +73,6 @@ function setupCLIProvider() {
 
     $provider->delegate('Amp\Reactor', 'Amp\getReactor');
     $provider->share('Amp\Reactor');
-    //$provider->share('Amp\Artax\Client');
 
     foreach ($aliases as $key => $value) {
         $provider->alias($key, $value);
@@ -129,8 +151,9 @@ catch(ServerContainerException $sce) {
     exit(-1);
 }
 catch(\Exception $e) {
-    echo "Unexpected exception of type ".get_class($e)." running Deployer`: ".$e->getMessage().PHP_EOL;
-    echo $e->getTraceAsString();
+    echo "Unexpected exception of type ".get_class($e)." running Deployer`: ".$e->getMessage().PHP_EOL;    
+    echoStackTrace($e->getTrace());
+    
     exit(-2);
 }
 
