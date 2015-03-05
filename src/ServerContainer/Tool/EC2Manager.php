@@ -114,15 +114,18 @@ class EC2Manager {
 
         $tags = array (
             array("Key" => 'Name', "Value" => 'Testing'),
-            array("Key" => 'Shamoan', "Value" => 'mothafarjer'),
+            //array("Key" => 'Shamoan', "Value" => 'mothafarjer'),
         );
 
         $fileContents = $this->getBootstrapScript();
+        
         $userData = base64_encode($fileContents);
 
         if (count($userData) > 16383 ) {
             throw new ServerContainerException('Startup package exceeds 16KB. Please adjust and try again');
         }
+
+
 
         $response = $this->ec2->runInstances([
             'ImageId'        => AMAZON_MACHINE_IMAGE_NAME,
@@ -281,8 +284,17 @@ class EC2Manager {
             throw new ServerContainerException("Failed to open $bootStrapFilename to build complete bootstrap.");
         }
 
+        $clavisBuilder = $this->getClavisWritingScript();
+        $bootstrapFileContents = str_replace("%CLAVIS_WRITER%", $clavisBuilder, $bootstrapFileContents);
+
+        return $bootstrapFileContents;
+    }
+
+
+    function getClavisWritingScript() {
+
         global $clavisList;
-        
+
         if (isset($clavisList) == false) {
             throw new ServerContainerException("clavisList not set.");
         }
@@ -291,17 +303,65 @@ class EC2Manager {
             if (defined($key) == false) {
                 throw new ServerContainerException("Key $key is not defined.");
             }
-            $searchReplaceArray["%$key%"] = constant($key); 
+            $searchReplaceArray["%$key%"] = constant($key);
         }
+
+        $clavisContents = <<< END
+<?php
+
+define('FLICKR_KEY', '%FLICKR_KEY%');
+define('FLICKR_SECRET', '%FLICKR_SECRET%');
+
+define('GITHUB_ACCESS_TOKEN', '%GITHUB_ACCESS_TOKEN'}');
+define('GITHUB_REPO_NAME', 'Danack/ServerContainer');
+
+define('MYSQL_USERNAME', '%MYSQL_PASSWORD%');
+define('MYSQL_PASSWORD', '%MYSQL_PASSWORD%');
+define('MYSQL_ROOT_PASSWORD', '%MYSQL_ROOT_PASSWORD%');
+
+//Server container
+define('AWS_SERVICES_KEY', '%AWS_SERVICES_KEY%');
+define('AWS_SERVICES_SECRET', '%AWS_SERVICES_SECRET%');
+
+http://www.bashton.com/blog/2013/centos-6-4-ami-available/
+define('AMAZON_MACHINE_IMAGE_NAME', 'ami-f261f0c8'); //Centos Sydney - not sure I trust them
+define('AMAZON_EC2_INSTANCE_TYPE', 'm1.small');
+define('AMAZON_EC2_SECURITY_GROUP', 'WebFrontendSecurityGroup');
+define('AMAZON_EC2_SSH_KEY_PAIR_NAME', 'OzServer1');
+
+\$clavisList = array(
+    'GITHUB_REPO_NAME',
+    'GITHUB_ACCESS_TOKEN',
+    'FLICKR_KEY',
+    'FLICKR_SECRET',
+    'AWS_SERVICES_KEY',
+    'AWS_SERVICES_SECRET',
+);
+
+END;
+        
+        $searchReplaceArray['%MYSQL_PASSWORD%'] = 'intahwebz';
+        $searchReplaceArray['%MYSQL_PASSWORD%'] = 'intahwebz';
+        $searchReplaceArray['%MYSQL_ROOT_PASSWORD%'] = 'pass123';
 
         $searchArray = array_keys($searchReplaceArray);
         $replaceArray = array_values($searchReplaceArray);
-        $bootstrapFileContents = str_replace($searchArray, $replaceArray, $bootstrapFileContents);
+        $bootstrapFileContents = str_replace($searchArray, $replaceArray, $clavisContents);
 
-        return $bootstrapFileContents;
+        $output = 'configFile="/home/servercontainer/clavis.php"\n';
+
+        $pipe = ">";
+        foreach (explode("\n", $bootstrapFileContents) as $line) {
+            $output .= "echo \"$line\" $pipe \$configFile \n";
+            $pipe = ">>";
+        }
+        
+        return $output;
     }
+    
 
-
+    
+    
     /**
      * @return bool
      */

@@ -9,6 +9,7 @@ use Danack\Console\Command\Command;
 use ServerContainer\ServerContainerException;
 use ArtaxServiceBuilder\Oauth2Token;
 use Aws\Ec2\Ec2Client;
+use Danack\Console\Input\InputArgument;
 
 require_once(__DIR__.'/../vendor/autoload.php');
 require_once __DIR__.'/../../clavis.php';
@@ -106,7 +107,21 @@ $commands = [
         'deploy',
         ['ServerContainer\Deployer\Deployer', 'run'],
         'Deploy the latest stuff.'
-    ]
+    ],
+
+    [
+        'info',
+        ['ServerContainer\Tool\Info', 'main'],
+        'Get an environment variable',
+        'args' => [
+            [
+                'variableRequired',
+                InputArgument::REQUIRED,
+                "The file that the conf should be written as."
+            ],
+        ]
+    ],
+    
 ];
 
 

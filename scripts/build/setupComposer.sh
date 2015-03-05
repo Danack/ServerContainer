@@ -1,3 +1,5 @@
+set -x #echo on
+
 #grep status is 0 if a line is selected, 1 if no lines were selected, and 2 if an error occurred. 
 
 #cat /root/.bashrc | grep -q "/usr/local/bin/php"
@@ -27,3 +29,4 @@ if [ $? -ne 0 ];
     else 
         echo "alias for composer already present"
 fi
+

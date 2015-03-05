@@ -46,17 +46,14 @@ Vagrant.configure("2") do |config|
     config.vm.network :forwarded_port, guest: 9002, host: 9002
 
 
-    config.vm.network :private_network, ip: "192.168.57.2"
+    #config.vm.network :private_network, ip: "192.168.57.2"
 
     #websites
     config.vm.network :forwarded_port, guest: 80, host: 8080
     config.vm.network :forwarded_port, guest: 8000, host: 8000
     
     config.vm.hostname = "servercontainer.test" 
-    
-     imagick.test
-    
-  
+
     config.vm.synced_folder "/documents/projects/github", "/home/github/", mount_options: ["dmode=777,fmode=777"]
     
     config.vm.synced_folder "/documents/projects/svn", "/home/svn/"

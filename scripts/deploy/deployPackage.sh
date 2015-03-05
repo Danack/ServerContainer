@@ -17,6 +17,8 @@ projectRootDir="/home/${projectName}"
 targetDir="${projectRootDir}/${sha}"
 linkCurrentDir="${projectRootDir}/current"
 
+ln -s /home/servercontainer/clavis.php ${projectRootDir}/clavis.php
+
 
 mkdir -p $targetDir
 tar -xf ${zipName} -C $targetDir --strip-components=1
