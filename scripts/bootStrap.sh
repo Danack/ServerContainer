@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #homedir="/home/github/ServerContainer/ServerContainer"
-homeDir="/home/servercontainer/ServerContainer"
+homeDir="/home/servercontainer/servercontainer"
 
 
 intahwebzGroup="www-data"
@@ -44,10 +44,6 @@ do
    :
    . ./build/createUser.sh $user
 done
-
-cp /home/github/intahwebz/intahwebzConf.php /home/intahwebz/intahwebzConf.php
-
-ln -s /home/github/ServerContainer/clavis.php /home/servercontainer/clavis.php 
 
 
 nginx
