@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #homedir="/home/github/ServerContainer/ServerContainer"
-homedir="/home/github/servercontainer/ServerContainer"
+homeDir="/home/github/servercontainer/ServerContainer"
 
 
 intahwebzGroup="www-data"
