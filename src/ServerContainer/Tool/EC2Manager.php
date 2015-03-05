@@ -348,13 +348,16 @@ END;
         $replaceArray = array_values($searchReplaceArray);
         $bootstrapFileContents = str_replace($searchArray, $replaceArray, $clavisContents);
 
-        $output = 'configFile="/home/servercontainer/clavis.php"\n';
+        $output = "\n";
+//        $output = 'configFile="/home/servercontainer/clavis.php"\n';
 
         $pipe = ">";
         foreach (explode("\n", $bootstrapFileContents) as $line) {
-            $output .= "echo \"$line\" $pipe \$configFile \n";
+            $output .= "echo \"$line\" $pipe /home/servercontainer/clavis.php \n";
             $pipe = ">>";
         }
+
+        $output = ".\n";
         
         return $output;
     }

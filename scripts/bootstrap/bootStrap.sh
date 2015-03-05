@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x #echo on
+
 # On a Amazon linux image we can use this to log console information to a file
 # this doesn't appear to work on the Centos image we're using.
 #delete this exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/tty0) 2>&1
