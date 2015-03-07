@@ -12,8 +12,8 @@ yum localinstall -y lib/mysql-community-release-el6-5.noarch.rpm
 cd ${homeDir}/scripts
 
 
-. ./build/importBaserealityGPGPublicKey.sh
-. ./build/addBaserealityRPMRepo.sh
+# . ./build/importBaserealityGPGPublicKey.sh
+# . ./build/addBaserealityRPMRepo.sh
 . ./build/installPackages.sh
 . ./build/configureIPTables.sh
 . ./build/createGroup.sh

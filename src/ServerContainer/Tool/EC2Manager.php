@@ -118,9 +118,7 @@ class EC2Manager {
         );
 
         $fileContents = $this->getBootstrapScript();
-        
         $userData = base64_encode($fileContents);
-
         if (count($userData) > 16383 ) {
             throw new ServerContainerException('Startup package exceeds 16KB. Please adjust and try again');
         }
@@ -357,7 +355,7 @@ END;
             $pipe = ">>";
         }
 
-        $output = ".\n";
+        $output .= "\n";
         
         return $output;
     }
