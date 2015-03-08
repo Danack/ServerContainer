@@ -42,9 +42,40 @@ class EC2Manager {
     private $ec2;
     
     function __construct() {
-        $this->ec2 = createClient('ap-southeast-2');
+        //$this->ec2 = createClient('ap-southeast-2');
+        $this->ec2 = createClient('eu-west-1');
+        
     }
 
+    function attachIPAddressToTest() {
+        $testInstances = $this->findTestInstances();
+        $ipAddress = '54.252.86.140';
+
+        foreach($testInstances as $testInstance) {
+            $this->associateIPAddress($testInstance, $ipAddress);
+            return;
+        }
+
+        $this->getIPAddressInfo();
+    }
+    
+    function getIPAddressInfo() {
+
+        //$ipAddress = '54.252.86.140';
+
+        $ipAddress = '52.64.1.109';
+        
+        $params = array(
+            'PublicIps' => array($ipAddress),
+        );
+        $response = $this->ec2->describeAddresses($params);
+        
+        var_dump($response);
+        
+    }
+
+    
+    
     function logTestInstances() {
         $testInstances = $this->findTestInstances();
         if(count($testInstances) == 0){
@@ -118,12 +149,14 @@ class EC2Manager {
         );
 
         $fileContents = $this->getBootstrapScript();
+        
+//        file_put_contents("./soborrd.sh", $fileContents);
+//        exit(0);
+        
         $userData = base64_encode($fileContents);
         if (count($userData) > 16383 ) {
             throw new ServerContainerException('Startup package exceeds 16KB. Please adjust and try again');
         }
-
-
 
         $response = $this->ec2->runInstances([
             'ImageId'        => AMAZON_MACHINE_IMAGE_NAME,
@@ -131,8 +164,10 @@ class EC2Manager {
             'MaxCount'       => 1,
             'InstanceType'   => AMAZON_EC2_INSTANCE_TYPE,
             'KeyName'        => AMAZON_EC2_SSH_KEY_PAIR_NAME,
-            'SecurityGroups' => array(AMAZON_EC2_SECURITY_GROUP),
-            "UserData"       => $userData
+            //'SecurityGroups' => array(AMAZON_EC2_SECURITY_GROUP),
+            'SecurityGroupIds' => array(AMAZON_EC2_SECURITY_GROUP),
+            "UserData"       => $userData,
+            'SubnetId'       => AMAZON_EC2_VPC,
         ]);
 
         $data = $response->toArray();
@@ -254,7 +289,9 @@ class EC2Manager {
     function associateIPAddress($instanceID, $ipAddress) {
         $params = [
             'InstanceId' => $instanceID,
-            'PublicIp' => $ipAddress
+            //'PublicIp' => $ipAddress,
+            //'AllocationId' => "eipalloc-2001e745"
+            'AllocationId' => "eipalloc-4c18ea29"
         ];
         
         try {
@@ -310,7 +347,7 @@ class EC2Manager {
 define('FLICKR_KEY', '%FLICKR_KEY%');
 define('FLICKR_SECRET', '%FLICKR_SECRET%');
 
-define('GITHUB_ACCESS_TOKEN', '%GITHUB_ACCESS_TOKEN'}');
+define('GITHUB_ACCESS_TOKEN', '%GITHUB_ACCESS_TOKEN%');
 define('GITHUB_REPO_NAME', 'Danack/ServerContainer');
 
 define('MYSQL_USERNAME', '%MYSQL_PASSWORD%');
@@ -327,7 +364,7 @@ define('AMAZON_EC2_INSTANCE_TYPE', 'm1.small');
 define('AMAZON_EC2_SECURITY_GROUP', 'WebFrontendSecurityGroup');
 define('AMAZON_EC2_SSH_KEY_PAIR_NAME', 'OzServer1');
 
-\$clavisList = array(
+\\\$clavisList = array(
     'GITHUB_REPO_NAME',
     'GITHUB_ACCESS_TOKEN',
     'FLICKR_KEY',
