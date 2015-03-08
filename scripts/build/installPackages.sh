@@ -1,6 +1,4 @@
 
-
-
 packages=()
 #packages+=("composer-2015_01_24")
 packages+=("composer-2015_02_28")
@@ -22,7 +20,7 @@ packages+=("mysql-community-server");
 packages+=("libwebp-0.4.2")
 packages+=("nginx-basereality-2015_01_25")
 packages+=("redis-basereality-2014_11_05")
-packages+=("setuptools")
+# packages+=("setuptools")
 packages+=("strace")
 packages+=("supervisor")
 packages+=("yuicompressor")
