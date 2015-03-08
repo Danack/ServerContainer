@@ -20,9 +20,9 @@ cd ${homeDir}/scripts
 
 cd ${homeDir}
 
-su -c servercontainer "sh bootStrapAsUser.sh"
+su -l servercontainer -c "cd /home/servercontainer/servercontainer && sh scripts/bootStrapAsUser.sh"
+sh autogen/addConfig.sh
 
-# need to run autogen/addConfig.sh
 
 cd ${homeDir}/scripts
 
