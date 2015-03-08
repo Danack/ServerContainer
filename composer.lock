@@ -4,20 +4,20 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0a2c90daae409ae7e2f0cb1a90eff80b",
+    "hash": "a617082941555580be21db53574657f3",
     "packages": [
         {
             "name": "amphp/amp",
-            "version": "v0.16.0",
+            "version": "v0.15.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/amphp/amp.git",
-                "reference": "446e09a95d8fe5d4368802f7b126095c5e54415c"
+                "reference": "5a39ec6730c8af07f24a4dd153a5e0455323e254"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amphp/amp/zipball/446e09a95d8fe5d4368802f7b126095c5e54415c",
-                "reference": "446e09a95d8fe5d4368802f7b126095c5e54415c",
+                "url": "https://api.github.com/repos/amphp/amp/zipball/5a39ec6730c8af07f24a4dd153a5e0455323e254",
+                "reference": "5a39ec6730c8af07f24a4dd153a5e0455323e254",
                 "shasum": ""
             },
             "require": {
@@ -63,26 +63,26 @@
                 "non-blocking",
                 "promise"
             ],
-            "time": "2015-02-18 14:59:48"
+            "time": "2015-01-22 01:16:07"
         },
         {
             "name": "amphp/artax",
-            "version": "dev-master",
+            "version": "v1.0.0-rc6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/amphp/artax.git",
-                "reference": "c628bd13ea1ab077cfa5be6e1c4185fc9317b3fa"
+                "reference": "3e4c07759064c39ca7a8f9c1b4c9742e9b5143fe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amphp/artax/zipball/c628bd13ea1ab077cfa5be6e1c4185fc9317b3fa",
-                "reference": "c628bd13ea1ab077cfa5be6e1c4185fc9317b3fa",
+                "url": "https://api.github.com/repos/amphp/artax/zipball/3e4c07759064c39ca7a8f9c1b4c9742e9b5143fe",
+                "reference": "3e4c07759064c39ca7a8f9c1b4c9742e9b5143fe",
                 "shasum": ""
             },
             "require": {
-                "amphp/amp": "~0.16.0",
+                "amphp/amp": "~0.15.0",
                 "php": ">=5.4.0",
-                "rdlowrey/nbsock": "~0.6.0"
+                "rdlowrey/nbsock": "~0.5.0"
             },
             "type": "library",
             "extra": {
@@ -116,25 +116,25 @@
                 "parallel",
                 "rest"
             ],
-            "time": "2015-02-18 17:02:19"
+            "time": "2015-01-05 19:28:04"
         },
         {
             "name": "amphp/dns",
-            "version": "v0.4.2",
+            "version": "v0.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/amphp/dns.git",
-                "reference": "e4578f504a855078b339e3a4d6da7f4e1f8f4723"
+                "reference": "46d1981ff5be827a8407c3f685635dc1926ea4e3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amphp/dns/zipball/e4578f504a855078b339e3a4d6da7f4e1f8f4723",
-                "reference": "e4578f504a855078b339e3a4d6da7f4e1f8f4723",
+                "url": "https://api.github.com/repos/amphp/dns/zipball/46d1981ff5be827a8407c3f685635dc1926ea4e3",
+                "reference": "46d1981ff5be827a8407c3f685635dc1926ea4e3",
                 "shasum": ""
             },
             "require": {
-                "amphp/amp": "~0.16.0",
-                "daverandom/libdns": "~1.0",
+                "amphp/amp": "~0.15.0",
+                "daverandom/libdns": "~0.2",
                 "php": ">=5.4.0"
             },
             "require-dev": {
@@ -169,20 +169,20 @@
                 "dns",
                 "resolve"
             ],
-            "time": "2015-02-18 16:18:40"
+            "time": "2015-02-17 20:34:12"
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "2.7.20",
+            "version": "2.7.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "2c9d93fbe680f64a84f5877209904f414d5cf92f"
+                "reference": "9dc3bb6dd6e16a7ed2f6fab73c2ee385145e26c0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/2c9d93fbe680f64a84f5877209904f414d5cf92f",
-                "reference": "2c9d93fbe680f64a84f5877209904f414d5cf92f",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/9dc3bb6dd6e16a7ed2f6fab73c2ee385145e26c0",
+                "reference": "9dc3bb6dd6e16a7ed2f6fab73c2ee385145e26c0",
                 "shasum": ""
             },
             "require": {
@@ -236,7 +236,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2015-02-24 00:04:06"
+            "time": "2015-03-05 00:07:56"
         },
         {
             "name": "danack/artaxservicebuilder",
@@ -451,27 +451,27 @@
         },
         {
             "name": "danack/githubartaxservice",
-            "version": "0.4.3",
+            "version": "0.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Danack/GithubArtaxService.git",
-                "reference": "d6d305848b5d5b4a6e8d4e9ce309ae9c64a423bd"
+                "reference": "0e41bd390bf9cd39bfd275ebdce23dc97d28b5f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Danack/GithubArtaxService/zipball/d6d305848b5d5b4a6e8d4e9ce309ae9c64a423bd",
-                "reference": "d6d305848b5d5b4a6e8d4e9ce309ae9c64a423bd",
+                "url": "https://api.github.com/repos/Danack/GithubArtaxService/zipball/0e41bd390bf9cd39bfd275ebdce23dc97d28b5f7",
+                "reference": "0e41bd390bf9cd39bfd275ebdce23dc97d28b5f7",
                 "shasum": ""
             },
             "require": {
-                "amphp/artax": "dev-master",
+                "amphp/artax": "1.0.0-rc6",
                 "danack/artaxservicebuilder": "0.3.2",
                 "danack/danack-code": ">=2.4.5",
                 "danack/danackhttp2": ">=1.2.0"
             },
             "require-dev": {
-                "danack/auryn": "~0.14.0",
-                "phpunit/phpunit": "4.1.3"
+                "phpunit/phpunit": "4.1.3",
+                "rdlowrey/auryn": "^0.14.2"
             },
             "bin": [
                 "bin/generateGithubArtaxService.php"
@@ -483,21 +483,16 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
-            "time": "2015-03-01 19:59:57"
+            "time": "2015-03-08 21:13:14"
         },
         {
             "name": "daverandom/libdns",
-            "version": "v1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/DaveRandom/LibDNS.git",
-                "reference": "1f4c7fc8f187c8e56c5df39b28f4689c65f5077f"
-            },
+            "version": "0.2.1",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DaveRandom/LibDNS/zipball/1f4c7fc8f187c8e56c5df39b28f4689c65f5077f",
-                "reference": "1f4c7fc8f187c8e56c5df39b28f4689c65f5077f",
-                "shasum": ""
+                "url": "http://satis.basereality.com/packages/DaveRandom/LibDNS/DaveRandom_LibDNS_v0.2.1.zip",
+                "reference": null,
+                "shasum": "0b1a9075f29c11ce7f00169e598d4a1cc944a137"
             },
             "require": {
                 "php": ">=5.4.0"
@@ -508,7 +503,6 @@
                     "LibDNS": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -516,7 +510,9 @@
             "keywords": [
                 "dns"
             ],
-            "time": "2015-02-18 11:30:51"
+            "support": {
+                "issues": "https://github.com/DaveRandom/LibDNS/issues"
+            }
         },
         {
             "name": "guzzle/guzzle",
@@ -664,20 +660,20 @@
         },
         {
             "name": "rdlowrey/nbsock",
-            "version": "v0.6.0",
+            "version": "v0.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rdlowrey/nbsock.git",
-                "reference": "a13e3f22a3446311a69ab7e4b128c07711db508a"
+                "reference": "ac6e021f32e7960a17530cdf16cb98c932497695"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rdlowrey/nbsock/zipball/a13e3f22a3446311a69ab7e4b128c07711db508a",
-                "reference": "a13e3f22a3446311a69ab7e4b128c07711db508a",
+                "url": "https://api.github.com/repos/rdlowrey/nbsock/zipball/ac6e021f32e7960a17530cdf16cb98c932497695",
+                "reference": "ac6e021f32e7960a17530cdf16cb98c932497695",
                 "shasum": ""
             },
             "require": {
-                "amphp/amp": "~0.16.0",
+                "amphp/amp": "~0.15.0",
                 "amphp/dns": "~0.4.0",
                 "php": ">=5.4.0"
             },
@@ -712,7 +708,7 @@
                 "tcp",
                 "tls"
             ],
-            "time": "2015-02-18 16:23:30"
+            "time": "2014-12-08 17:19:17"
         },
         {
             "name": "symfony/event-dispatcher",

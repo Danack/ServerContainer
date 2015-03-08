@@ -22,7 +22,7 @@
         "aws/aws-sdk-php": "~2.7.12",
         "danack/auryn": "0.14.2",
         "danack/console": "~2.6.1",
-        "danack/githubartaxservice": "0.4.3",
+        "danack/githubartaxservice": "0.4.4",
         "intahwebz/configurator": "^0.2.2"
     },
     "autoload": {

@@ -19,7 +19,9 @@ packages+=("mysql-community-client");
 packages+=("mysql-community-server");
 packages+=("libwebp-0.4.2")
 packages+=("nginx-basereality-2015_01_25")
-packages+=("redis-basereality-2014_11_05")
+# packages+=("redis-basereality-2014_11_05")
+packages+=("redis-basereality-2015_01_07")
+
 # packages+=("setuptools")
 packages+=("strace")
 packages+=("supervisor")

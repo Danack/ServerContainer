@@ -198,9 +198,7 @@ class EC2Manager {
         $this->ec2->createTags($params);
         
         $this->waitRunning($instanceID);
- 
-        echo "skipping ip address.";
-        return;
+
         try{
             echo "Server is up, waiting 5 seconds assign IP address.\n";
             sleep(5);
