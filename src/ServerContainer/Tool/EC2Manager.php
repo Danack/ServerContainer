@@ -158,24 +158,33 @@ class EC2Manager {
             throw new ServerContainerException('Startup package exceeds 16KB. Please adjust and try again');
         }
 
+        $placement = array(
+            'AvailabilityZone' => 'eu-west-1a',
+            'Tenancy' => 'default'
+        );
+
+
         $response = $this->ec2->runInstances([
-            'ImageId'        => AMAZON_MACHINE_IMAGE_NAME,
-            'MinCount'       => 1,
-            'MaxCount'       => 1,
-            'InstanceType'   => AMAZON_EC2_INSTANCE_TYPE,
-            'KeyName'        => AMAZON_EC2_SSH_KEY_PAIR_NAME,
-            //'SecurityGroups' => array(AMAZON_EC2_SECURITY_GROUP),
-            'SecurityGroupIds' => array(AMAZON_EC2_SECURITY_GROUP),
-            "UserData"       => $userData,
-            'SubnetId'       => AMAZON_EC2_VPC,
-        ]);
+                'ImageId' => AMAZON_MACHINE_IMAGE_NAME,
+                'MinCount' => 1,
+                'MaxCount' => 1,
+                'InstanceType' => AMAZON_EC2_INSTANCE_TYPE,
+                'KeyName' => AMAZON_EC2_SSH_KEY_PAIR_NAME,
+                //'SecurityGroups' => array(AMAZON_EC2_SECURITY_GROUP),
+                'SecurityGroupIds' => array(AMAZON_EC2_SECURITY_GROUP),
+                "UserData" => $userData,
+                'SubnetId' => AMAZON_EC2_VPC,
+                //'Placement' => $placement
+            ]
+        );
+        
+
+
 
         $data = $response->toArray();
 
         $instanceID = null;
 
-  
-        
         foreach ($data['Instances'] as $instance) {
             $instanceID = $instance['InstanceId'];
             echo "instanceID is $instanceID\n";
@@ -190,6 +199,8 @@ class EC2Manager {
         
         $this->waitRunning($instanceID);
  
+        echo "skipping ip address.";
+        return;
         try{
             echo "Server is up, waiting 5 seconds assign IP address.\n";
             sleep(5);
