@@ -104,6 +104,12 @@ $commands = [
     ],
 
     [
+        'attachIPAddress',
+        ['ServerContainer\Tool\EC2Manager', 'attachIPAddressToTest'],
+        're-attach the test ip address to the test instance.'
+    ],
+    
+    [
         'deploy',
         ['ServerContainer\Deployer\Deployer', 'run'],
         'Deploy the latest stuff.'
