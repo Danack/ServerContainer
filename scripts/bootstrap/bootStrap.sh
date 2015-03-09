@@ -36,7 +36,9 @@ find /home/servercontainer -type f -exec chmod 755 {} \;
 
 chown -R servercontainer:www-data /home/servercontainer
 
-%CLAVIS_WRITER%
+# %CLAVIS_WRITER%
+
+# %INTAHWEBZ_CONF%
 
 cd /home/servercontainer/servercontainer
 

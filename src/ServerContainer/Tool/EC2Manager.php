@@ -149,10 +149,7 @@ class EC2Manager {
         );
 
         $fileContents = $this->getBootstrapScript();
-        
-//        file_put_contents("./soborrd.sh", $fileContents);
-//        exit(0);
-        
+
         $userData = base64_encode($fileContents);
         if (count($userData) > 16383 ) {
             throw new ServerContainerException('Startup package exceeds 16KB. Please adjust and try again');
@@ -329,26 +326,71 @@ class EC2Manager {
         }
 
         $clavisBuilder = $this->getClavisWritingScript();
-        $bootstrapFileContents = str_replace("%CLAVIS_WRITER%", $clavisBuilder, $bootstrapFileContents);
+        $bootstrapFileContents = str_replace("# %CLAVIS_WRITER%", $clavisBuilder, $bootstrapFileContents);
+
+        $intahwebzConf = $this->getIntahwebzConfigWritingScript();
+        $bootstrapFileContents = str_replace("# %INTAHWEBZ_CONF%", $intahwebzConf, $bootstrapFileContents);
 
         return $bootstrapFileContents;
     }
 
 
+    function getIntahwebzConfigWritingScript() {
+
+$configContents = <<< 'END'
+<?php
+
+define('HACKING', false);
+
+define('LIVE_SERVER', TRUE);
+define('SCRIPTS_VERSION', '1.9.8');
+
+if(HACKING == false){
+	define('CONTENT_BUCKET', 'content.basereality.com');
+	define('BACKUP_BUCKET', 'backup.basereality.com');
+}
+else{
+	define('CONTENT_BUCKET', 'contenttest3.basereality.com');
+	define('BACKUP_BUCKET', 'backuptest3.basereality.com');
+}
+
+//This bucket is the same across all instances. It allows us to have large images in
+//articles that are shown the same across all servers.
+define('STATIC_BUCKET', 'static.basereality.com');
+
+define('MYSQL_PORT', 3306);
+
+
+define('MYSQL_USERNAME', 'intahwebz');
+define('MYSQL_PASSWORD', 'pass123');
+define('MYSQL_ROOT_PASSWORD', 'pass123');
+define('JIG_RENDER_CHECK', 'COMPILE_CHECK_EXISTS');
+define('MYSQL_SERVER', null);
+define('MYSQL_SOCKET_CONNECTION', '/var/lib/mysql/mysql.sock');
+
+define('CDN_CNAMES', 5);
+define('CDN_ENABLED', FALSE);
+define('ROOT_DOMAIN', 'basereality.test');
+define('BLOG_ROOT_DOMAIN', 'blog.basereality.test');
+
+////Intahwebz credentials
+define('AWS_SERVICES_KEY', '%AWS_SERVICES_KEY%');
+define('AWS_SERVICES_SECRET', '%AWS_SERVICES_SECRET%');
+
+//Root credentials
+define('FLICKR_KEY', '%FLICKR_KEY%');
+define('FLICKR_SECRET', '%FLICKR_SECRET%');
+
+
+define('GITHUB_ACCESS_TOKEN', '%GITHUB_ACCESS_TOKEN%');
+define('GITHUB_REPO_NAME', 'Danack/intahwebz');
+
+END;
+
+        return $this->genConfig($configContents, "/home/intahwebz/intahwebzConf.php");
+    }
+
     function getClavisWritingScript() {
-
-        global $clavisList;
-
-        if (isset($clavisList) == false) {
-            throw new ServerContainerException("clavisList not set.");
-        }
-        $searchReplaceArray = array();
-        foreach ($clavisList as $key) {
-            if (defined($key) == false) {
-                throw new ServerContainerException("Key $key is not defined.");
-            }
-            $searchReplaceArray["%$key%"] = constant($key);
-        }
 
         $clavisContents = <<< END
 <?php
@@ -383,29 +425,47 @@ define('AMAZON_EC2_SSH_KEY_PAIR_NAME', 'OzServer1');
 );
 
 END;
-        
+
+        return $this->genConfig($clavisContents, "/home/servercontainer/clavis.php");
+ 
+    }
+
+    function genConfig($configPlaceHolder, $filename) {
+
+        global $clavisList;
+
+        if (isset($clavisList) == false) {
+            throw new ServerContainerException("clavisList not set.");
+        }
+        $searchReplaceArray = array();
+        foreach ($clavisList as $key) {
+            if (defined($key) == false) {
+                throw new ServerContainerException("Key $key is not defined.");
+            }
+            $searchReplaceArray["%$key%"] = constant($key);
+        }
+
         $searchReplaceArray['%MYSQL_PASSWORD%'] = 'intahwebz';
         $searchReplaceArray['%MYSQL_PASSWORD%'] = 'intahwebz';
         $searchReplaceArray['%MYSQL_ROOT_PASSWORD%'] = 'pass123';
 
         $searchArray = array_keys($searchReplaceArray);
         $replaceArray = array_values($searchReplaceArray);
-        $bootstrapFileContents = str_replace($searchArray, $replaceArray, $clavisContents);
+        $bootstrapFileContents = str_replace($searchArray, $replaceArray, $configPlaceHolder);
 
         $output = "\n";
-//        $output = 'configFile="/home/servercontainer/clavis.php"\n';
 
         $pipe = ">";
         foreach (explode("\n", $bootstrapFileContents) as $line) {
-            $output .= "echo \"$line\" $pipe /home/servercontainer/clavis.php \n";
+            $output .= "echo \"$line\" $pipe $filename \n";
             $pipe = ">>";
         }
 
         $output .= "\n";
-        
+
         return $output;
+
     }
-    
 
     
     
