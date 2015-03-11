@@ -7,6 +7,7 @@ use Amp\Artax\Client as ArtaxClient;
 use Amp\Artax\Response;
 
 use ArtaxServiceBuilder\Oauth2Token;
+use ServerContainer\MessageException;
 
 // composer config -g github-oauth.github.com <oauthtoken>
 
@@ -50,26 +51,42 @@ class Deployer {
     /**
      * 
      */
-    function run() {
+    function run($application) {
+        $apps = array_keys($this->appConfigList);
+        $appsString = implode(", ", $apps);
+        $appsString .= " or 'all'.";
+
+        if (strlen($application) == null) {
+            throw new MessageException("Please specify the application to deploy, one of ".$appsString);
+        }
+
+        if ($application === 'all') {
+            //allowed
+        }
+        else if (array_key_exists($application, $this->appConfigList) == false) {
+            throw new MessageException("Unknown application '$application', please choose one of $appsString");
+        }
+
         foreach ($this->appConfigList as $projectName => $appConfig) {
-            set_time_limit(500);
+            if ($application === 'all' || $projectName === $application) {
+                set_time_limit(500);
+                $author = $appConfig[0];
+                $packageName = $appConfig[1];
 
-            $author = $appConfig[0];
-            $packageName = $appConfig[1];
+                $commit = $this->findAppToUpdate($author, $packageName);
+                if ($commit) {
+                    $archiveFilename = $this->downloadPackage($author, $packageName, $commit);
+                    $command = sprintf(
+                        "sh ./scripts/deploy/deployPackage.sh %s %s %s %s",
+                        $projectName,
+                        $commit->sha,
+                        $archiveFilename,
+                        $packageName
+                    );
 
-            $commit = $this->findAppToUpdate($author, $packageName);
-            if ($commit) {
-                $archiveFilename = $this->downloadPackage($author, $packageName, $commit);
-                $command = sprintf(
-                    "sh ./scripts/deploy/deployPackage.sh %s %s %s %s",
-                    $projectName,
-                    $commit->sha,
-                    $archiveFilename,
-                    $packageName
-                );
-
-                echo "need to run command: \n".$command."\n";
-                system($command);
+                    echo "need to run command: \n".$command."\n";
+                    system($command);
+                }
             }
         }
     }

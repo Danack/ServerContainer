@@ -18,7 +18,7 @@ cd ./ServerContainer-master/scripts
 . ./build/createGroup.sh
 
 users=()
-
+users+=("intahwebz")
 users+=("servercontainer")
 
 for user in "${users[@]}"

@@ -10,6 +10,7 @@ use ServerContainer\ServerContainerException;
 use ArtaxServiceBuilder\Oauth2Token;
 use Aws\Ec2\Ec2Client;
 use Danack\Console\Input\InputArgument;
+use ServerContainer\MessageException;
 
 require_once(__DIR__.'/../vendor/autoload.php');
 require_once __DIR__.'/../../clavis.php';
@@ -108,13 +109,18 @@ $commands = [
         ['ServerContainer\Tool\EC2Manager', 'attachIPAddressToTest'],
         're-attach the test ip address to the test instance.'
     ],
-    
-    [
-        'deploy',
-        ['ServerContainer\Deployer\Deployer', 'run'],
-        'Deploy the latest stuff.'
-    ],
-
+//    [
+//        'deploy',
+//        ['ServerContainer\Deployer\Deployer', 'run'],
+//        'Deploy an application.',
+//        'args' => [
+//            [
+//                'application',
+//                InputArgument::REQUIRED,
+//                "Which application should be deployed."
+//            ],
+//        ]
+//    ],
     [
         'info',
         ['ServerContainer\Tool\Info', 'main'],
@@ -166,6 +172,11 @@ try {
         formatKeyNames($params)
     );
 }
+catch (MessageException $me) {
+    echo $me->getMessage();
+    echo PHP_EOL;
+    exit(-1);
+}
 catch(ServerContainerException $sce) {
     echo "Error running task: \n";
     echo $sce->getMessage();
@@ -210,6 +221,19 @@ function createConsole($commands) {
 
         $console->add($newCommand);
     }
+
+
+    $deployCommand = new Command('deploy', ['ServerContainer\Deployer\Deployer', 'run']);
+    $deployCommand->setDescription('Deploy an application.');
+    //$deployCommand->addArgument('application', InputArgument::REQUIRED, "Which application should be deployed.");
+    $deployCommand->addArgument(
+        'application',
+        InputArgument::OPTIONAL,
+        "Which application should be deployed."
+    );
+
+    $console->add($deployCommand);
+    
 
     return $console;
 }

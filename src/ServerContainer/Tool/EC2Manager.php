@@ -160,7 +160,6 @@ class EC2Manager {
             'Tenancy' => 'default'
         );
 
-
         $response = $this->ec2->runInstances([
                 'ImageId' => AMAZON_MACHINE_IMAGE_NAME,
                 'MinCount' => 1,
@@ -374,8 +373,8 @@ define('ROOT_DOMAIN', 'basereality.test');
 define('BLOG_ROOT_DOMAIN', 'blog.basereality.test');
 
 ////Intahwebz credentials
-define('AWS_SERVICES_KEY', '%AWS_SERVICES_KEY%');
-define('AWS_SERVICES_SECRET', '%AWS_SERVICES_SECRET%');
+define('AWS_SERVICES_KEY', '%INTAHWEBZ_AWS_SERVICES_KEY%');
+define('AWS_SERVICES_SECRET', '%INTAHWEBZ_AWS_SERVICES_SECRET%');
 
 //Root credentials
 define('FLICKR_KEY', '%FLICKR_KEY%');
