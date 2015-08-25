@@ -1,4 +1,4 @@
-set -eux -o pipefail
+# set -eux -o pipefail
 
 #grep status is 0 if a line is selected, 1 if no lines were selected, and 2 if an error occurred. 
 

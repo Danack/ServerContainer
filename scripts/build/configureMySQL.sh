@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eux -o pipefail
+# set -eux -o pipefail
 
 SQL_SITE_USERNAME=$1
 SQL_SITE_PASSWORD=$2

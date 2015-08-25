@@ -1,4 +1,4 @@
-set -eux -o pipefail
+# set -eux -o pipefail
 
 rpmPath="/etc/yum.repos.d/basereality.repo"
 

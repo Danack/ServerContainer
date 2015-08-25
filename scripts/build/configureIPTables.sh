@@ -1,4 +1,4 @@
-set -eux -o pipefail
+# set -eux -o pipefail
 
 #drop all existing rules
 iptables -F

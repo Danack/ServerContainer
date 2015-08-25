@@ -1,5 +1,5 @@
 
-set -eux -o pipefail
+# set -eux -o pipefail
 
 packages=()
 #packages+=("composer-2015_01_24")
