@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -eux -o pipefail
+
 intahwebzGroup="www-data"
 
 cd /home/github/ServerContainer/ServerContainer

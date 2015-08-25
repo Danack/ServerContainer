@@ -1,4 +1,5 @@
 
+set -eux -o pipefail
 
 . ./build/createGroup.sh
 

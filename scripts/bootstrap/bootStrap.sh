@@ -18,6 +18,7 @@ cd ./ServerContainer-master/scripts
 . ./build/createGroup.sh
 
 users=()
+users+=("blog")
 users+=("intahwebz")
 users+=("servercontainer")
 

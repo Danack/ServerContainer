@@ -1,3 +1,6 @@
+
+# install in /etc/yum.d/rpmname.repo
+
 [basereality]
 name=BaseReality packages
 baseurl=http://rpm.basereality.com/RPMS/$basearch

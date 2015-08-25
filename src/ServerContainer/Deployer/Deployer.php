@@ -37,6 +37,7 @@ class Deployer {
         $cacheDirectory) {
         $this->githubService = $githubService;
         $this->appConfigList = [
+            'blog'    => [ 'danack', 'blog', 'master', 'version' => 'latest' ],
             'imagickdemos' => [ 'danack', 'Imagick-demos', 'master', 'version' => 'latest' ],
             'intahwebz'    => [ 'danack', 'intahwebz', 'master', 'version' => 'latest' ],
         ];

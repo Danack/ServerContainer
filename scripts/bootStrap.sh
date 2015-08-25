@@ -1,7 +1,10 @@
 #!/bin/bash
 
+set -eux -o pipefail
+
 #homedir="/home/github/ServerContainer/ServerContainer"
 homeDir="/home/servercontainer/servercontainer"
+
 
 
 intahwebzGroup="www-data"
@@ -11,6 +14,7 @@ yum localinstall -y lib/mysql-community-release-el6-5.noarch.rpm
 
 cd ${homeDir}/scripts
 
+. ./build/setupDevEnv.sh
 . ./build/importBaserealityGPGPublicKey.sh
 . ./build/addBaserealityRPMRepo.sh
 . ./build/installPackages.sh
@@ -32,6 +36,7 @@ cd ${homeDir}/scripts
 usermod -a -G www-data nginx
 
 users=( )
+users+=("blog")
 users+=("imagickdemos")
 users+=("intahwebz")
 users+=("servercontainer")
@@ -47,5 +52,5 @@ nginx
 /etc/init.d/php-fpm start
 /etc/init.d/redis start
 
-
-echo "imagick.test 127.0.0.1" >> /etc/hosts
+echo "127.0.0.1 imagick.test" >> /etc/hosts
+echo "127.0.0.1 phpimagick.test" >> /etc/hosts

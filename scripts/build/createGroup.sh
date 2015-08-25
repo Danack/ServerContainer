@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -eux -o pipefail
+
 group="www-data"
 
 egrep -i -q "^${group}" /etc/group 

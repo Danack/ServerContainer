@@ -11,9 +11,125 @@ use ArtaxServiceBuilder\Oauth2Token;
 use Aws\Ec2\Ec2Client;
 use Danack\Console\Input\InputArgument;
 use ServerContainer\MessageException;
+use Auryn\Injector;
 
 require_once(__DIR__.'/../vendor/autoload.php');
 require_once __DIR__.'/../../clavis.php';
+
+function exceptionHandler(Exception $ex)
+{
+    //TODO - need to ob_end_clean as many times as required because
+    //otherwise partial content gets sent to the client.
+
+    if (headers_sent() == false) {
+        header("HTTP/1.0 500 Internal Server Error", true, 500);
+    }
+    else {
+        //Exception after headers sent
+    }
+
+    while ($ex) {
+        echo "Exception " . get_class($ex) . ': ' . $ex->getMessage()."<br/>";
+
+        foreach ($ex->getTrace() as $tracePart) {
+            if (isset($tracePart['file']) && isset($tracePart['line'])) {
+                echo $tracePart['file'] . " " . $tracePart['line'] . "<br/>";
+            }
+            else if (isset($tracePart["function"])) {
+                echo $tracePart["function"] . "<br/>";
+            }
+            else {
+                var_dump($tracePart);
+            }
+        }
+        $ex = $ex->getPrevious();
+        if ($ex) {
+            echo "Previously ";
+        }
+    };
+}
+
+function errorHandler($errno, $errstr, $errfile, $errline)
+{
+    if (error_reporting() == 0) {
+        return true;
+    }
+    if ($errno == E_DEPRECATED) {
+        //lol don't care.
+        return true;
+    }
+
+    $errorNames = [
+        E_ERROR => "E_ERROR",
+        E_WARNING => "E_WARNING",
+        E_PARSE => "E_PARSE",
+        E_NOTICE => "E_NOTICE",
+        E_CORE_ERROR => "E_CORE_ERROR",
+        E_CORE_WARNING => "E_CORE_WARNING",
+        E_COMPILE_ERROR => "E_COMPILE_ERROR",
+        E_COMPILE_WARNING => "E_COMPILE_WARNING",
+        E_USER_ERROR => "E_USER_ERROR",
+        E_USER_WARNING => "E_USER_WARNING",
+        E_USER_NOTICE => "E_USER_NOTICE",
+        E_STRICT => "E_STRICT",
+        E_RECOVERABLE_ERROR => "E_RECOVERABLE_ERROR",
+        E_DEPRECATED => "E_DEPRECATED",
+        E_USER_DEPRECATED => "E_USER_DEPRECATED",
+    ];
+    
+    $errorType = "Error type $errno";
+
+    if (array_key_exists($errno, $errorNames)) {
+        $errorType = $errorNames[$errno];
+    }
+
+    $message =  "$errorType: [$errno] $errstr in file $errfile on line $errline";
+
+    throw new \LogicException($message);
+}
+
+
+function fatalErrorShutdownHandler()
+{
+    $fatals = [
+        E_ERROR,
+        E_PARSE,
+        E_USER_ERROR,
+        E_CORE_ERROR,
+        E_CORE_WARNING,
+        E_COMPILE_ERROR,
+        E_COMPILE_WARNING
+    ];
+    $lastError = error_get_last();
+
+    if ($lastError && in_array($lastError['type'], $fatals)) {
+//        if (headers_sent()) {
+//            return;
+//        }
+        header_remove();
+        header("HTTP/1.0 500 Internal Server Error");
+        
+        extract($lastError);
+        $errorMessage = sprintf("Fatal error: %s in %s on line %d", $message, $file, $line);
+
+        error_log($errorMessage);
+        $msg = "Oops! Something went terribly wrong :(";
+
+        //$msg = "<pre style=\"color:red;\">{$msg}</pre>";
+        $msg = sprintf(
+            "<pre style=\"color:red;\">%s</pre>",
+            $errorMessage
+        );
+
+        echo "<html><body><h1>500 Internal Server Error</h1><hr/>{$msg}</body></html>";
+    }
+}
+
+
+register_shutdown_function('fatalErrorShutdownHandler');
+set_exception_handler('exceptionHandler');
+set_error_handler('errorHandler');
+
 
 
 function echoStackTrace($traceParts) {
@@ -51,10 +167,10 @@ function getOauthToken() {
 }
 
 /**
- * @return \Auryn\Provider
+ * @return \Auryn\Injector
  */
 function setupCLIProvider() {
-    $provider = new Auryn\Provider();
+    $provider = new Injector();
 
     $aliases = [
         'ArtaxServiceBuilder\ResponseCache' =>
@@ -133,6 +249,9 @@ $commands = [
             ],
         ]
     ],
+  
+
+    
     
 ];
 
@@ -166,11 +285,12 @@ try {
     $params['inputDir'] = __DIR__."/../";
     $params['outputDir'] = __DIR__."/../";
     $params = array_merge($params, $parsedCommand->getParams());
-    
-    $injector->execute(
-        $parsedCommand->getCallable(),
-        formatKeyNames($params)
-    );
+
+    foreach ($parsedCommand->getParams() as $key => $value) {
+        $injector->defineParam($key, $value);
+    }
+
+    $injector->execute($parsedCommand->getCallable());
 }
 catch (MessageException $me) {
     echo $me->getMessage();
@@ -222,7 +342,6 @@ function createConsole($commands) {
         $console->add($newCommand);
     }
 
-
     $deployCommand = new Command('deploy', ['ServerContainer\Deployer\Deployer', 'run']);
     $deployCommand->setDescription('Deploy an application.');
     //$deployCommand->addArgument('application', InputArgument::REQUIRED, "Which application should be deployed.");
@@ -233,7 +352,14 @@ function createConsole($commands) {
     );
 
     $console->add($deployCommand);
+    $envWriteCommand = new Command('genEnvSettings', ['ServerContainer\Deployer\EnvConfWriter', 'writeEnvFile']);  
+    $envWriteCommand->setDescription("Write an env setting bash script.");
+    $envWriteCommand->addArgument('projectName', InputArgument::REQUIRED, 'The project name. This will be prepended to the env vars.');
     
+    $envWriteCommand->addArgument('env', InputArgument::REQUIRED, 'Which environment the settings should be generated for.');
+    $envWriteCommand->addArgument('keysFilename', InputArgument::REQUIRED, 'The input keys');
+    $envWriteCommand->addArgument('outputFilename', InputArgument::REQUIRED, 'The file name that the env settings should be written to, e.g. /etc/profile.d/projectName.sh');
+    $console->add($envWriteCommand);
 
     return $console;
 }

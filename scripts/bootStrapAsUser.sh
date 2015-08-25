@@ -1,3 +1,5 @@
+set -eux -o pipefail
+
 oauthtoken=`php bin/info.php GITHUB_ACCESS_TOKEN`
 composer config -g github-oauth.github.com $oauthtoken
 
