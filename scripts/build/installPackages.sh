@@ -39,7 +39,7 @@ packageString=$( IFS=$' '; echo "${packages[*]}" )
 
 echo "Installing packages $packageString"
 
-yum erase python-setuptools-0.6.10-3.el6.noarch
+# yum erase python-setuptools-0.6.10-3.el6.noarch
 
 yum -y install $packageString
 
