@@ -557,16 +557,16 @@
         },
         {
             "name": "intahwebz/configurator",
-            "version": "0.2.6",
+            "version": "0.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Danack/Configurator.git",
-                "reference": "0299fae800710ab0d2a70ee58bea5f8939625177"
+                "reference": "39bda6596fe8a8341fe71bb4ef40725535b5298e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Danack/Configurator/zipball/0299fae800710ab0d2a70ee58bea5f8939625177",
-                "reference": "0299fae800710ab0d2a70ee58bea5f8939625177",
+                "url": "https://api.github.com/repos/Danack/Configurator/zipball/39bda6596fe8a8341fe71bb4ef40725535b5298e",
+                "reference": "39bda6596fe8a8341fe71bb4ef40725535b5298e",
                 "shasum": ""
             },
             "require": {
@@ -605,7 +605,7 @@
                 "tool",
                 "utf-8"
             ],
-            "time": "2015-08-19 00:56:16"
+            "time": "2015-08-24 16:02:11"
         },
         {
             "name": "rdlowrey/auryn",
