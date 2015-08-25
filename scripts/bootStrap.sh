@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eux -o pipefail
+# set -eux -o pipefail
 
 #homedir="/home/github/ServerContainer/ServerContainer"
 homeDir="/home/servercontainer/servercontainer"

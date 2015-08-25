@@ -16,9 +16,6 @@ packages+=("ImageMagick-2015_06_22")
 packages+=("imagick-2015_06_22")
 
 
-
-
-
 packages+=("php-basereality-2015_02_01-5.6.2")
 #packages+=("php-basereality-2015_02_15-5.6.5")
 #packages+=("php-basereality-2015_03_20-5.6.7")
@@ -42,19 +39,9 @@ packageString=$( IFS=$' '; echo "${packages[*]}" )
 
 echo "Installing packages $packageString"
 
+yum erase python-setuptools-0.6.10-3.el6.noarch
+
 yum -y install $packageString
 
-
-environment="centos_guest"
-if [ "$#" -ge 1 ]; then
-    environment=$1
-fi
-
-
-#mysql --defaults-extra-file=/path/to/config.cnf
-#[client]
-#user = whatever
-#password = whatever
-#host = whatever
 
 
