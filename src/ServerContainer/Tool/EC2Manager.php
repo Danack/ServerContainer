@@ -354,6 +354,8 @@ mkdir -p /home/servercontainer/servercontainer
 
 #sh /tmp/install/srcBootstrap.sh
 
+yum -y erase python-setuptools
+
 cd /tmp
 wget -O master.tgz https://github.com/Danack/ServerContainer/archive/master.tar.gz
 tar -xvf master.tgz
