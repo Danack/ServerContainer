@@ -2,10 +2,7 @@
 
 # set -eux -o pipefail
 
-#homedir="/home/github/ServerContainer/ServerContainer"
 homeDir="/home/servercontainer/servercontainer"
-
-
 
 intahwebzGroup="www-data"
 

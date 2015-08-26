@@ -313,10 +313,78 @@ class EC2Manager {
         echo "Address $ipAddress should now be associated with instance $instanceID"."\r\n";
     }
 
+    function getBootstrapScript()
+    {
+$cloundInitScript = <<< 'SCRIPT'
+#!/bin/bash
+
+read -r -d '' contents <<'EOF'
+# http://serverfault.com/questions/148341/linux-schedule-command-to-run-once-after-reboot-runonce-equivalent
+# Copy this file to /usr/local/bin/runonce
+# and add this entry to crontab
+# @reboot     /usr/local/bin/runonce.sh
+
+mkdir -p /etc/local/runonce.d/ran
+
+for file in /etc/local/runonce.d/*
+do
+    if [ ! -f "$file" ]
+    then
+        continue
+    fi
+    "$file"
+    basename=$(basename "$file")
+    mv "$file" "/etc/local/runonce.d/ran/$basename.$(date +%Y%m%dT%H%M%S)"
+    logger -t runonce -p local3.info "$file"
+done
+EOF
+
+echo "$contents" > /usr/local/bin/runonce.sh
+chmod +x /usr/local/bin/runonce.sh
+
+read -r -d '' contents <<'EOF'
+#!/bin/sh
+
+mkdir -p /tmp/install
+cd /tmp/install
+
+mkdir -p /home/servercontainer/servercontainer
+
+#wget --output-document=/tmp/install/srcBootstrap.sh --no-check-certificate https://raw.githubusercontent.com/Danack/ServerContainer/master/scripts/bootStrap.sh
+
+#sh /tmp/install/srcBootstrap.sh
+
+cd /tmp
+wget -O master.tgz https://github.com/Danack/ServerContainer/archive/master.tar.gz
+tar -xvf master.tgz
+cd ./ServerContainer-master/scripts
+
+sh ./bootstrap/bootStrap.sh
+
+EOF
+
+mkdir -p /etc/local/runonce.d
+
+echo "$contents" > /etc/local/runonce.d/installServerContainer.sh
+
+chmod +x /etc/local/runonce.d/installServerContainer.sh
+
+
+(crontab -u root -l; echo "@reboot     /usr/local/bin/runonce.sh" ) | crontab -u root -
+
+mkdir -p /home/servercontainer
+
+
+SCRIPT;
+        $cloundInitScript .= $this->getClavisWritingScript(); 
+
+        return $cloundInitScript;
+    }
+
     /**
      * @return mixed|string
      */
-    function getBootstrapScript() {
+    function getBootstrapScriptRunningInCloundInit() {
         $bootStrapFilename = __DIR__."/../../../scripts/bootstrap/bootStrap.sh";
         $bootstrapFileContents = file_get_contents($bootStrapFilename);
 
@@ -359,7 +427,6 @@ define('STATIC_BUCKET', 'static.basereality.com');
 
 define('MYSQL_PORT', 3306);
 
-
 define('MYSQL_USERNAME', 'intahwebz');
 define('MYSQL_PASSWORD', 'pass123');
 define('MYSQL_ROOT_PASSWORD', 'pass123');
@@ -379,7 +446,6 @@ define('AWS_SERVICES_SECRET', '%INTAHWEBZ_AWS_SERVICES_SECRET%');
 //Root credentials
 define('FLICKR_KEY', '%FLICKR_KEY%');
 define('FLICKR_SECRET', '%FLICKR_SECRET%');
-
 
 define('GITHUB_ACCESS_TOKEN', '%GITHUB_ACCESS_TOKEN%');
 define('GITHUB_REPO_NAME', 'Danack/intahwebz');

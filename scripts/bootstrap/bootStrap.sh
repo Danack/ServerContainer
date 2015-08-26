@@ -7,13 +7,10 @@ set -x #echo on
 #delete this exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/tty0) 2>&1
 # exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
 
-cd /tmp
-
-wget -O master.tgz https://github.com/Danack/ServerContainer/archive/master.tar.gz
-
-tar -xvf master.tgz
-
-cd ./ServerContainer-master/scripts
+#cd /tmp
+#wget -O master.tgz https://github.com/Danack/ServerContainer/archive/master.tar.gz
+#tar -xvf master.tgz
+#cd ./ServerContainer-master/scripts
 
 . ./build/createGroup.sh
 
