@@ -1,5 +1,6 @@
 
 # set -eux -o pipefail
+set -e
 
 packages=()
 #packages+=("composer-2015_01_24")
@@ -25,7 +26,7 @@ packages+=("mysql-community-server");
 packages+=("libwebp-0.4.2")
 packages+=("nginx-basereality-2015_01_25")
 packages+=("redis-basereality-2015_01_07")
-packages+=("setuptools")
+# packages+=("setuptools")
 packages+=("strace")
 packages+=("supervisor")
 packages+=("yuicompressor")
@@ -37,7 +38,7 @@ echo "Installing packages $packageString"
 
 # yum erase python-setuptools-0.6.10-3.el6.noarch
 
-yum -y --replacefiles install $packageString
+yum -y install $packageString
 
 
 

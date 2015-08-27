@@ -161,20 +161,26 @@ class EC2Manager {
         );
 
         $response = $this->ec2->runInstances([
-                'ImageId' => AMAZON_MACHINE_IMAGE_NAME,
-                'MinCount' => 1,
-                'MaxCount' => 1,
-                'InstanceType' => AMAZON_EC2_INSTANCE_TYPE,
-                'KeyName' => AMAZON_EC2_SSH_KEY_PAIR_NAME,
-                //'SecurityGroups' => array(AMAZON_EC2_SECURITY_GROUP),
-                'SecurityGroupIds' => array(AMAZON_EC2_SECURITY_GROUP),
-                "UserData" => $userData,
-                'SubnetId' => AMAZON_EC2_VPC,
-                //'Placement' => $placement
-                'Ebs' => [
-                    'DeleteOnTermination' => true,
-                    'VolumeSize' => 10,
-                ],
+            'ImageId' => AMAZON_MACHINE_IMAGE_NAME,
+            'MinCount' => 1,
+            'MaxCount' => 1,
+            'InstanceType' => AMAZON_EC2_INSTANCE_TYPE,
+            'KeyName' => AMAZON_EC2_SSH_KEY_PAIR_NAME,
+            //'SecurityGroups' => array(AMAZON_EC2_SECURITY_GROUP),
+            'SecurityGroupIds' => array(AMAZON_EC2_SECURITY_GROUP),
+            "UserData" => $userData,
+            'SubnetId' => AMAZON_EC2_VPC,
+            //'Placement' => $placement
+            'Ebs' => [
+                'DeleteOnTermination' => true,
+                'VolumeSize' => 10,
+            ],
+            
+                
+            'IamInstanceProfile' => array(
+                'Arn' => 'string',
+                'Name' => 'string',
+            ),
                 
                 
             ]
@@ -384,8 +390,12 @@ mkdir -p /home/servercontainer/servercontainer
 
 yum -y erase python-setuptools
 
+
+
+
 cd /tmp
-wget -O master.tgz https://github.com/Danack/ServerContainer/archive/master.tar.gz
+curl -L "https://github.com/Danack/ServerContainer/archive/master.tar.gz" -o "master.tgz"
+#wget -O master.tgz https://github.com/Danack/ServerContainer/archive/master.tar.gz
 tar -xvf master.tgz
 cd ./ServerContainer-master/scripts
 
