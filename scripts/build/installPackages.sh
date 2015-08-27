@@ -37,7 +37,7 @@ echo "Installing packages $packageString"
 
 # yum erase python-setuptools-0.6.10-3.el6.noarch
 
-yum -y install $packageString
+yum -y --replacefiles install $packageString
 
 
 

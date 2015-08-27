@@ -171,6 +171,12 @@ class EC2Manager {
                 "UserData" => $userData,
                 'SubnetId' => AMAZON_EC2_VPC,
                 //'Placement' => $placement
+                'Ebs' => [
+                    'DeleteOnTermination' => true,
+                    'VolumeSize' => 10,
+                ],
+                
+                
             ]
         );
         
@@ -195,13 +201,22 @@ class EC2Manager {
         
         $this->waitRunning($instanceID);
 
-        try{
-            echo "Server is up, waiting 5 seconds assign IP address.\n";
-            sleep(5);
-            $this->associateIPAddress($instanceID, $ipAddress);
+        $ipAllocted = false;
+       
+        for ($x=0; ($x<10) && ($ipAllocted == false); $x++) {
+            try {
+                echo "Server is up, waiting 5 seconds assign IP address.\n";
+                sleep(5);
+                $this->associateIPAddress($instanceID, $ipAddress);
+                $ipAllocted = true;
+            }
+            catch(Ec2Exception $e) {
+                //should save $e   
+            }
         }
-        catch(Ec2Exception $e){
-            throw new ServerContainerException("Failed to allocated IP address, ", 0, $e->getMessage());
+        
+        if ($ipAllocted == false) {
+            throw new ServerContainerException("Failed to allocated IP address, ");
         }
 
         $hostname = $this->getInstanceProperty($instanceID, 'PublicDnsName');
@@ -300,6 +315,19 @@ class EC2Manager {
         ];
         
         try {
+            $this->ec2->disassociateAddress([
+                    'AssociationId' => $params['AllocationId'],
+                    //'DryRun' => false,
+                    //'PublicIp' => '<string>',
+                ]
+            );
+        }
+        catch(Ec2Exception $ec2e) {
+            echo "disassociateAddress failed - but we don't care\n";
+        }
+                
+        
+        try {
             $response = $this->ec2->associateAddress($params);
         }
         catch(Ec2Exception $ec2e) {
@@ -378,7 +406,12 @@ mkdir -p /home/servercontainer
 
 
 SCRIPT;
-        $cloundInitScript .= $this->getClavisWritingScript(); 
+        $cloundInitScript .= $this->getClavisWritingScript();
+        
+        $cloundInitScript .= "
+         
+            # reboot 
+        ";
 
         return $cloundInitScript;
     }
