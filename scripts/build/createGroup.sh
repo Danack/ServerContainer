@@ -11,3 +11,6 @@ else
    echo "Group ${group} does not exist, creating."
    groupadd -r $group
 fi
+
+
+echo "createGroup $0 complete"

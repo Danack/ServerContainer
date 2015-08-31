@@ -2,6 +2,8 @@
 
 # set -eux -o pipefail
 
+set -e
+
 homeDir="/home/servercontainer/servercontainer"
 
 intahwebzGroup="www-data"

@@ -76,3 +76,5 @@ iptables -A INPUT -p udp --sport 53 -j ACCEPT
 
 
 /sbin/service iptables save 
+
+echo "configureIPTables $0 complete"

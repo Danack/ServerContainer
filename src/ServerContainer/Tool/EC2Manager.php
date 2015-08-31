@@ -175,13 +175,13 @@ class EC2Manager {
                 'DeleteOnTermination' => true,
                 'VolumeSize' => 10,
             ],
+
+//            'IamInstanceProfile' => array(
+//                'Arn' => 'string',
+//                'Name' => 'string',
+//            ),
             
-                
-            'IamInstanceProfile' => array(
-                'Arn' => 'string',
-                'Name' => 'string',
-            ),
-                
+            //'UserData' => base64_encode()
                 
             ]
         );
@@ -388,7 +388,7 @@ mkdir -p /home/servercontainer/servercontainer
 
 #sh /tmp/install/srcBootstrap.sh
 
-yum -y erase python-setuptools
+# yum -y erase python-setuptools
 
 
 
@@ -398,7 +398,6 @@ curl -L "https://github.com/Danack/ServerContainer/archive/master.tar.gz" -o "ma
 #wget -O master.tgz https://github.com/Danack/ServerContainer/archive/master.tar.gz
 tar -xvf master.tgz
 cd ./ServerContainer-master/scripts
-
 sh ./bootstrap/bootStrap.sh
 
 EOF
