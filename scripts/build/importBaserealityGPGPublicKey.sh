@@ -1,5 +1,6 @@
 
 # set -eux -o pipefail
+set -x
 
 #grep status is 0 if a line is selected, 1 if no lines were selected, and 2 if an error occurred.
   

@@ -1,5 +1,7 @@
 
-set -eux -o pipefail
+#set -eux -o pipefail
+
+set -x
 
 . ./build/createGroup.sh
 

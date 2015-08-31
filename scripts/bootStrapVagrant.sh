@@ -1,6 +1,7 @@
 #!/bin/bash
 
-set -eux -o pipefail
+# set -eux -o pipefail
+set -x
 
 intahwebzGroup="www-data"
 

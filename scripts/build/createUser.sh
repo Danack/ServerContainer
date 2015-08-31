@@ -2,7 +2,7 @@
 
 # set -eux -o pipefail
 
-set -e
+set -x
 
 if [ "$#" -ne 1 ]; then
     echo "Illegal number of parameters, should be 'createUser username'"

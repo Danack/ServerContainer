@@ -2,7 +2,7 @@
 
 # set -eux -o pipefail
 
-set -e
+set -x
 
 homeDir="/home/servercontainer/servercontainer"
 

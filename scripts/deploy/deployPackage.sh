@@ -1,5 +1,5 @@
 
-set -eux -o pipefail
+# set -eux -o pipefail
 
 if [ "$#" -ne 4 ]; then
     echo "Illegal number of parameters ${numParams}, should be deployPackage projectName sha zipFilename archiveName"
