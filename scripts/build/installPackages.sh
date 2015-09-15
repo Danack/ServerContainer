@@ -10,23 +10,19 @@ packages+=("ghostscript")
 packages+=("java-1.6.0-openjdk")
 packages+=("libjpeg-turbo")
 packages+=("libpng")
-#packages+=("ImageMagick-2015_01_20")
-#packages+=("imagick-2015_02_25")
 packages+=("ImageMagick-2015_06_22")
-packages+=("imagick-2015_06_22")
-packages+=("php-basereality-2015_02_01-5.6.2")
-#packages+=("php-basereality-2015_02_15-5.6.5")
-#packages+=("php-basereality-2015_03_20-5.6.7")
-#packages+=("imagick7-2015_01_30")
-#packages+=("php7-basereality-2015_01_30")
-#packages+=("mysql");
-#packages+=("mysql-server");
+packages+=("imagick-2015_09_01")
+packages+=("php-basereality-2015_09_05-5.6.9")
+
+
 packages+=("mysql-community-client");
 packages+=("mysql-community-server");
 packages+=("libwebp-0.4.2")
 packages+=("nginx-basereality-2015_01_25")
 packages+=("redis-basereality-2015_01_07")
-# packages+=("setuptools")
+
+#setuptools is needed by supervisor...but isn't insalled automatically by yum :-(
+packages+=("setuptools")
 packages+=("strace")
 packages+=("supervisor")
 packages+=("yuicompressor")

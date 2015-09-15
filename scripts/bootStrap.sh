@@ -25,7 +25,6 @@ cd ${homeDir}
 su -l servercontainer -c "cd /home/servercontainer/servercontainer && sh scripts/bootStrapAsUser.sh"
 sh autogen/addConfig.sh
 
-
 cd ${homeDir}/scripts
 
 /etc/init.d/mysqld start

@@ -23,7 +23,7 @@
         "rdlowrey/auryn": "^1.0.2",
         "danack/console": "~2.6.1",
         "danack/githubartaxservice": "0.4.4",
-        "intahwebz/configurator": "^0.2.6"
+        "intahwebz/configurator": "^0.2.8"
     },
     "autoload": {
         "psr-0": {

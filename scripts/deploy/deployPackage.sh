@@ -1,6 +1,8 @@
 
 # set -eux -o pipefail
 
+set -x
+
 if [ "$#" -ne 4 ]; then
     echo "Illegal number of parameters ${numParams}, should be deployPackage projectName sha zipFilename archiveName"
     exit -1
@@ -16,11 +18,12 @@ sh ./scripts/build/createUser.sh $projectName
 
 projectRootDir="/home/${projectName}"
 targetDir="${projectRootDir}/${sha}"
-linkCurrentDir="${projectRootDir}/current"
 
-# ln -s /home/servercontainer/clavis.php ${projectRootDir}/clavis.php
-
-php bin/cli.php genEnvSettings ${projectName} ${envSetting} ${projectRootDir}/clavis.php /etc/profile.d/${projectName}.sh
+php bin/cli.php writeClavisFile \
+    ${projectName} \
+    ${envSetting} \
+    ${projectRootDir}/clavis.php \
+    ${targetDir}/data/keysRequired.json
 
 mkdir -p $targetDir
 tar -xf ${zipName} -C $targetDir --strip-components=1
@@ -41,8 +44,6 @@ echo "" >> releaseInfo.php
 chown -R ${projectName}:www-data $targetDir
 
 sh ./scripts/deploy.sh centos
-
-ln -sfn $targetDir $linkCurrentDir
 
 /etc/init.d/supervisord restart
 /etc/init.d/php-fpm restart

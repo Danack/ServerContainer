@@ -16,6 +16,17 @@ use Auryn\Injector;
 require_once(__DIR__.'/../vendor/autoload.php');
 require_once __DIR__.'/../../clavis.php';
 
+
+
+$keys = getKeysServerContainer();
+
+define('GITHUB_ACCESS_TOKEN', $keys['github.access_token']);
+define('AWS_SERVICES_KEY', $keys['aws.services.key']);
+define('AWS_SERVICES_SECRET', $keys['aws.services.secret']);
+
+require_once __DIR__.'/../../settings.php';
+
+
 function exceptionHandler(Exception $ex)
 {
     //TODO - need to ob_end_clean as many times as required because
@@ -157,6 +168,7 @@ function createClient($region) {
 }
 
 
+
 function getOauthToken() {
     static $oauthToken = null;
     if ($oauthToken == null) {
@@ -287,6 +299,7 @@ try {
     $params = array_merge($params, $parsedCommand->getParams());
 
     foreach ($parsedCommand->getParams() as $key => $value) {
+        //echo "key $key, value $value\n";
         $injector->defineParam($key, $value);
     }
 
@@ -350,8 +363,8 @@ function createConsole($commands) {
         InputArgument::OPTIONAL,
         "Which application should be deployed."
     );
-
     $console->add($deployCommand);
+    
     $envWriteCommand = new Command('genEnvSettings', ['ServerContainer\Deployer\EnvConfWriter', 'writeEnvFile']);  
     $envWriteCommand->setDescription("Write an env setting bash script.");
     $envWriteCommand->addArgument('projectName', InputArgument::REQUIRED, 'The project name. This will be prepended to the env vars.');
@@ -360,6 +373,20 @@ function createConsole($commands) {
     $envWriteCommand->addArgument('keysFilename', InputArgument::REQUIRED, 'The input keys');
     $envWriteCommand->addArgument('outputFilename', InputArgument::REQUIRED, 'The file name that the env settings should be written to, e.g. /etc/profile.d/projectName.sh');
     $console->add($envWriteCommand);
+    
+    
+    $writeClavisCommand = new Command('writeClavisFile', ['ServerContainer\Deployer\ClavisWriter', 'writeClavisFile']);
+    $writeClavisCommand->setDescription("Write a key file for a project.");
+    $writeClavisCommand->addArgument('projectName', InputArgument::REQUIRED, 'The project name');
+    $writeClavisCommand->addArgument('environment', InputArgument::REQUIRED, 'The environment setting');
+    $writeClavisCommand->addArgument('clavisFilename', InputArgument::REQUIRED, 'The clavis filename to be written to.');
+    
+    $writeClavisCommand->addArgument('projectKeysFile', InputArgument::REQUIRED, 'The name of a json file that contains a list of keys needed by the app.');
+    
+    
+    $console->add($writeClavisCommand);
+        
+    
 
     return $console;
 }
