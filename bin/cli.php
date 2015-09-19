@@ -17,12 +17,11 @@ require_once(__DIR__.'/../vendor/autoload.php');
 require_once __DIR__.'/../../clavis.php';
 
 
-
 $keys = getKeysServerContainer();
 
 define('GITHUB_ACCESS_TOKEN', $keys['github.access_token']);
-define('AWS_SERVICES_KEY', $keys['aws.services.key']);
-define('AWS_SERVICES_SECRET', $keys['aws.services.secret']);
+define('AWS_SERVICES_KEY', $keys['servercontainer.aws.services.key']);
+define('AWS_SERVICES_SECRET', $keys['servercontainer.aws.services.secret']);
 
 require_once __DIR__.'/../../settings.php';
 

@@ -1,10 +1,12 @@
 
 # set -eux -o pipefail
 
-set -x
+set -eux
 
-if [ "$#" -ne 4 ]; then
-    echo "Illegal number of parameters ${numParams}, should be deployPackage projectName sha zipFilename archiveName"
+#set -x
+
+if [ "$#" -ne 5 ]; then
+    echo "Illegal number of parameters, should be deployPackage projectName sha zipFilename archiveName environment"
     exit -1
 fi
 
@@ -12,12 +14,15 @@ projectName=$1
 sha=$2
 zipName=$3
 archiveName=$4
-envSetting="dev"
+envSetting=$5
 
 sh ./scripts/build/createUser.sh $projectName
 
 projectRootDir="/home/${projectName}"
 targetDir="${projectRootDir}/${sha}"
+
+mkdir -p $targetDir
+tar -xf ${zipName} -C $targetDir --strip-components=1
 
 php bin/cli.php writeClavisFile \
     ${projectName} \
@@ -25,8 +30,6 @@ php bin/cli.php writeClavisFile \
     ${projectRootDir}/clavis.php \
     ${targetDir}/data/keysRequired.json
 
-mkdir -p $targetDir
-tar -xf ${zipName} -C $targetDir --strip-components=1
 
 cd $targetDir
 
@@ -43,7 +46,7 @@ echo "" >> releaseInfo.php
 
 chown -R ${projectName}:www-data $targetDir
 
-sh ./scripts/deploy.sh centos
+sh ./scripts/deploy.sh ${envSetting}
 
 /etc/init.d/supervisord restart
 /etc/init.d/php-fpm restart

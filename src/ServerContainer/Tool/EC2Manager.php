@@ -168,7 +168,7 @@ class EC2Manager {
             'KeyName' => AMAZON_EC2_SSH_KEY_PAIR_NAME,
             //'SecurityGroups' => array(AMAZON_EC2_SECURITY_GROUP),
             'SecurityGroupIds' => array(AMAZON_EC2_SECURITY_GROUP),
-            "UserData" => $userData,
+            //"UserData" => $userData,
             'SubnetId' => AMAZON_EC2_VPC,
             //'Placement' => $placement
             'Ebs' => [
@@ -230,6 +230,11 @@ class EC2Manager {
         $sshCommand .= "or ssh -i ".AMAZON_EC2_SSH_KEY_PAIR_NAME.".pem $username@test.basereality.com "."\r\n";
 
         echo  "Connect to the instance using the command:".$sshCommand."\r\n";
+        echo "and then run\n";
+        
+        echo $fileContents;
+        
+        
     }
 
 
@@ -408,14 +413,13 @@ echo "$contents" > /etc/local/runonce.d/installServerContainer.sh
 
 chmod +x /etc/local/runonce.d/installServerContainer.sh
 
-
 (crontab -u root -l; echo "@reboot     /usr/local/bin/runonce.sh" ) | crontab -u root -
 
 mkdir -p /home/servercontainer
 
 
 SCRIPT;
-        $cloundInitScript .= $this->getClavisWritingScript();
+        //$cloundInitScript .= $this->getClavisWritingScript();
         
         $cloundInitScript .= "
          
@@ -541,7 +545,6 @@ END;
 
     function genConfig($configPlaceHolder, $filename) {
 
-        global $clavisList;
 
         if (isset($clavisList) == false) {
             throw new ServerContainerException("clavisList not set.");

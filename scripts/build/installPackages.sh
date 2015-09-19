@@ -1,6 +1,6 @@
 
-# set -eux -o pipefail
-set -x
+set -eux -o pipefail
+# set -x
 
 packages=()
 #packages+=("composer-2015_01_24")
@@ -32,7 +32,7 @@ packageString=$( IFS=$' '; echo "${packages[*]}" )
 
 echo "Installing packages $packageString"
 
-# yum erase python-setuptools-0.6.10-3.el6.noarch
+yum erase python-setuptools-0.6.10-3.el6.noarch
 
 yum -y install $packageString
 

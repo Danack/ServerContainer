@@ -5,14 +5,12 @@ namespace ServerContainer\Deployer;
 use GithubService\GithubArtaxService\GithubService;
 use Amp\Artax\Client as ArtaxClient;
 use Amp\Artax\Response;
-
 use ArtaxServiceBuilder\Oauth2Token;
 use ServerContainer\MessageException;
+use ServerContainer\ServerContainerException;
 
-// composer config -g github-oauth.github.com <oauthtoken>
-
-class Deployer {
-
+class Deployer
+{
     /**
      * @var GithubService
      */
@@ -73,16 +71,24 @@ class Deployer {
                 set_time_limit(500);
                 $author = $appConfig[0];
                 $packageName = $appConfig[1];
+                $keys = getKeysServerContainer("environment");
+                
+                if (array_key_exists("environment", $keys) == false) {
+                    throw new ServerContainerException('Environment not set in keys file'); 
+                }
+                
+                $environment = $keys["environment"];
 
                 $commit = $this->findAppToUpdate($author, $packageName);
                 if ($commit) {
                     $archiveFilename = $this->downloadPackage($author, $packageName, $commit);
                     $command = sprintf(
-                        "sh ./scripts/deploy/deployPackage.sh %s %s %s %s",
+                        "sh ./scripts/deploy/deployPackage.sh %s %s %s %s %s",
                         $projectName,
                         $commit->sha,
                         $archiveFilename,
-                        $packageName
+                        $packageName,
+                        $environment
                     );
 
                     echo "need to run command: \n".$command."\n";
