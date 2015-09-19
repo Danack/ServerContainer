@@ -17,10 +17,10 @@ if ($argc != 2) {
 $variableRequired = $argv[1];
 
 $allowedVariables = array(
-    'MYSQL_USERNAME',
-    'MYSQL_PASSWORD',
-    'MYSQL_ROOT_PASSWORD',
-    'GITHUB_ACCESS_TOKEN',
+    'github.access_token',
+//    'MYSQL_PASSWORD',
+//    'MYSQL_ROOT_PASSWORD',
+//    'GITHUB_ACCESS_TOKEN',
 );
 
 if(in_array($variableRequired, $allowedVariables) == true){
