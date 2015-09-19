@@ -2,7 +2,7 @@
 
 set -x
 
-oauthtoken=`php bin/info.php GITHUB_ACCESS_TOKEN`
+oauthtoken=`php bin/info.php "github.access_token"`
 composer config -g github-oauth.github.com $oauthtoken
 
 composerpath=`which composer`

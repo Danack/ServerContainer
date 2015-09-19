@@ -20,7 +20,7 @@ cd /home/github/ServerContainer/ServerContainer/scripts
 
 cd /home/github/ServerContainer/ServerContainer
 
-oauthtoken=`php bin/info.php GITHUB_ACCESS_TOKEN`
+oauthtoken=`php bin/info.php "github.access_token"`
 composer config -g github-oauth.github.com $oauthtoken
 
 php vendor/bin/configurate -p data/config.php data/my.cnf.php autogen/my.cnf.conf $environment
