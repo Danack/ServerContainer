@@ -2,6 +2,13 @@
 
 # set -eux -o pipefail
 
+
+if [ -f /home/servercontainer/mysql_deployed.txt ]
+  then
+    echo "/home/servercontainer/mysql_deployed.txt exists."
+    return
+fi
+
 SQL_SITE_USERNAME=$1
 SQL_SITE_PASSWORD=$2
 SQL_ROOT_PASSWORD=$3
@@ -40,5 +47,8 @@ mysql -uroot -e "UPDATE mysql.user SET Password=PASSWORD('${SQL_ROOT_PASSWORD}')
 
 echo "Flushing privileges"
 mysql -uroot -e "FLUSH PRIVILEGES;"
+
+
+echo "MySQL is deployed" > /home/servercontainer/mysql_deployed.txt
 
 echo "configureMySQL end."

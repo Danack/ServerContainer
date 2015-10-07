@@ -3,7 +3,7 @@
 $config = <<< END
 [mysql]
 # no-auto-rehash
-default-character-set=${'mysql.charset'}
+default-character-set=${'mysql_charset'}
 
 user=mysql
 symbolic-links=0
@@ -18,8 +18,8 @@ sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
 # The following options will be passed to all MySQL clients
 [client]
 port		= 3306
-socket		= ${'mysql.socket'}
-default-character-set=${'mysql.charset'}
+socket		= ${'mysql_socket'}
+default-character-set=${'mysql_charset'}
 
 # The MySQL server
 [mysqld]
@@ -29,19 +29,19 @@ default-character-set=${'mysql.charset'}
 sql-mode = STRICT_ALL_TABLES
 
 port		= 3306
-socket		= ${'mysql.socket'}
-init-connect='SET NAMES ${'mysql.charset'}'
-character-set-server=${'mysql.charset'}
-collation-server=${'mysql.collation'}
-log-error=${'mysql.log.directory'}/mysqld.log
+socket		= ${'mysql_socket'}
+init-connect='SET NAMES ${'mysql_charset'}'
+character-set-server=${'mysql_charset'}
+collation-server=${'mysql_collation'}
+log-error=${'mysql_log_directory'}/mysqld.log
 general-log=1
-general_log_file=${'mysql.log.directory'}/mysql.log
+general_log_file=${'mysql_log_directory'}/mysql.log
 
 explicit_defaults_for_timestamp=ON
 
 long_query_time=1
 slow_query_log=1
-slow_query_log_file=${'mysql.log.directory'}/mysql_slow_query.log
+slow_query_log_file=${'mysql_log_directory'}/mysql_slow_query.log
 
 
 # skip-locking
@@ -62,7 +62,7 @@ innodb_file_per_table
 #1	Table names are stored in lowercase on disk and name comparisons are not case sensitive. MySQL converts all table names to lowercase on storage and lookup. This behavior also applies to database names and table aliases.
 #2	Table and database names are stored on disk using the lettercase specified in the CREATE TABLE or CREATE DATABASE statement, but MySQL converts them to lowercase on lookup. Name comparisons are not case sensitive. This works only on file systems that are not case sensitive! InnoDB table names are stored in lowercase, as for lower_case_table_names=1.
 
-lower_case_table_names=${'mysql.casetablenames'}
+lower_case_table_names=${'mysql_casetablenames'}
 
 # Don't listen on a TCP/IP port at all. This can be a security enhancement,
 # if all processes that need to connect to mysqld run on the same host.

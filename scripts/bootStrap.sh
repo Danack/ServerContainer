@@ -1,38 +1,45 @@
 #!/bin/bash
 
 # set -eux -o pipefail
-
 set -x
 
-homeDir="/home/servercontainer/servercontainer"
+environment="centos,live"
+
+if [ "$#" -ge 1 ]; then
+    environment=$1
+fi
 
 intahwebzGroup="www-data"
 
-cd ${homeDir}
+cd /home/github/ServerContainer/ServerContainer
 yum localinstall -y lib/mysql-community-release-el6-5.noarch.rpm
 
-cd ${homeDir}/scripts
 
-. ./build/importBaserealityGPGPublicKey.sh
-. ./build/addBaserealityRPMRepo.sh
-. ./build/installPackages.sh
-. ./build/configureIPTables.sh
-. ./build/createGroup.sh
-. ./build/setupComposer.sh
+mkdir -p /home/servercontainer
 
-cd ${homeDir}
+cd /home/github/ServerContainer/ServerContainer/scripts
 
-su -l servercontainer -c "cd /home/servercontainer/servercontainer && sh scripts/bootStrapAsUser.sh"
-sh autogen/addConfig.sh
+bash ./build/importBaserealityGPGPublicKey.sh
+bash ./build/addBaserealityRPMRepo.sh
+bash ./build/installPackages.sh
+bash ./build/configureIPTables.sh
+bash ./build/createGroup.sh
+bash ./build/setupComposer.sh
 
-cd ${homeDir}/scripts
+cd /home/github/ServerContainer/ServerContainer
 
-/etc/init.d/mysqld start
-. ./build/configureMySQL.sh intahwebz pass123 pass123
+oauthtoken=`php bin/info.php "github.access_token"`
+composer config -g github-oauth.github.com $oauthtoken
+
+
+sh scripts/build/configurateTemplates.sh $environment
+
+cd /home/github/ServerContainer/ServerContainer/scripts
 
 usermod -a -G www-data nginx
 
 users=( )
+users+=("basereality")
 users+=("blog")
 users+=("imagickdemos")
 users+=("intahwebz")
@@ -45,9 +52,15 @@ do
 done
 
 
+/etc/init.d/mysqld start
+. ./build/configureMySQL.sh intahwebz pass123 pass123
+
+#cp /home/github/intahwebz/intahwebzConf.php /home/intahwebz/intahwebzConf.php
+#ln -s /home/github/ServerContainer/clavis.php /home/servercontainer/clavis.php 
+
 nginx
 /etc/init.d/php-fpm start
 /etc/init.d/redis start
 
-echo "127.0.0.1 imagick.test" >> /etc/hosts
-echo "127.0.0.1 phpimagick.test" >> /etc/hosts
+
+echo "imagick.test 127.0.0.1" >> /etc/hosts

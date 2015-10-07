@@ -37,7 +37,8 @@ class Deployer
         $this->appConfigList = [
             'blog'    => [ 'danack', 'blog', 'master', 'version' => 'latest' ],
             'imagickdemos' => [ 'danack', 'Imagick-demos', 'master', 'version' => 'latest' ],
-            'intahwebz'    => [ 'danack', 'intahwebz', 'master', 'version' => 'latest' ],
+            'basereality'    => [ 'danack', 'intahwebz', 'master', 'version' => 'latest' ],
+            'intahwebz'    => [ 'danack', 'intahwebz_com', 'master', 'version' => 'latest' ],
         ];
 
         $this->artaxClient = $artaxClient;
