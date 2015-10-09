@@ -34,7 +34,7 @@ echo "Installing packages $packageString"
 
 # yum -y erase python-setuptools-0.6.10-3.el6.noarch
 #remove this package without any of it's dependencies.
-rpm -e --nodeps python-setuptools-0.6.10-3.el6.noarch
+rpm -e --nodeps python-setuptools-0.6.10-3.el6.noarch || true
 
 yum -y install $packageString
 
