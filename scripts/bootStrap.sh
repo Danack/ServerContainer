@@ -61,6 +61,6 @@ done
 nginx
 /etc/init.d/php-fpm start
 /etc/init.d/redis start
-
+/etc/init.d/supervisord start
 
 echo "imagick.test 127.0.0.1" >> /etc/hosts

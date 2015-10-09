@@ -2,4 +2,9 @@
 
 environment="dev,centos_guest"
 
-bash bootstrap.sh "${environment}"
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+pushd $DIR
+
+bash ./bootstrap.sh "${environment}"
+popd

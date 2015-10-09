@@ -16,9 +16,6 @@ $variableRequired = $argv[1];
 
 $allowedVariables = array(
     'github.access_token',
-//    'MYSQL_PASSWORD',
-//    'MYSQL_ROOT_PASSWORD',
-//    'GITHUB_ACCESS_TOKEN',
 );
 
 if (in_array($variableRequired, $allowedVariables) == false) {

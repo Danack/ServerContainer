@@ -12,19 +12,13 @@ use Aws\Ec2\Ec2Client;
 use Danack\Console\Input\InputArgument;
 use ServerContainer\MessageException;
 use Auryn\Injector;
+use ServerContainer\Config;
 
 require_once(__DIR__.'/../vendor/autoload.php');
 require_once __DIR__.'/../../clavis.php';
 
 
-$keys = getKeysServerContainer();
-
-define('GITHUB_ACCESS_TOKEN', $keys['github.access_token']);
-define('AWS_SERVICES_KEY', $keys['servercontainer.aws.services.key']);
-define('AWS_SERVICES_SECRET', $keys['servercontainer.aws.services.secret']);
-
 require_once __DIR__.'/../../settings.php';
-
 
 function exceptionHandler(Exception $ex)
 {
@@ -157,21 +151,26 @@ function echoStackTrace($traceParts) {
     }
 }
 
-function createClient($region) {
-    $config = array();
-    $config['key'] = AWS_SERVICES_KEY;
-    $config['secret'] = AWS_SERVICES_SECRET;
-    $config['region'] = $region;
+function createClient($region, $key, $secret)
+{
+    $s3Config = array();
+    
+    $s3Config['credentials'] = array( 
+         "key" => $key, 
+         "secret" => $secret
+    );
+    $s3Config['region'] = $region;
 
-    return Ec2Client::factory($config);
+    return Ec2Client::factory($s3Config);
 }
 
 
-
-function getOauthToken() {
+function getOauthToken(Config $config)
+{
     static $oauthToken = null;
     if ($oauthToken == null) {
-        $oauthToken = new Oauth2Token(GITHUB_ACCESS_TOKEN);
+        $accessToken = $config->getKey(Config::GITHUB_ACCESS_TOKEN);
+        $oauthToken = new Oauth2Token($accessToken);
     }
 
     return $oauthToken;
@@ -201,6 +200,10 @@ function setupCLIProvider() {
     }
 
     $provider->delegate('Amp\Reactor', 'Amp\getReactor');
+    $provider->delegate('ServerContainer\Tool\EC2Manager', 'createEC2Manager');
+    $provider->delegate('ServerContainer\Tool\KillEC2TestInstances', 'createKillEC2TestInstances');
+    
+    
     $provider->share('Amp\Reactor');
 
     foreach ($aliases as $key => $value) {
@@ -210,6 +213,24 @@ function setupCLIProvider() {
     $provider->defineParam('userAgent', 'Danack/ServerContainer');
     
     return $provider;
+}
+
+
+function createEC2Manager(Config $config)
+{
+
+    return new \ServerContainer\Tool\EC2Manager(
+        $config->getKey(Config::SERVER_CONTAINER_AWS_SERVICES_KEY),
+        $config->getKey(Config::SERVER_CONTAINER_AWS_SERVICES_SECRET)
+    );
+}
+
+function createKillEC2TestInstances(Config $config)
+{
+    return new \ServerContainer\Tool\KillEC2TestInstances(
+        $config->getKey(Config::SERVER_CONTAINER_AWS_SERVICES_KEY),
+        $config->getKey(Config::SERVER_CONTAINER_AWS_SERVICES_SECRET)
+    );
 }
 
 

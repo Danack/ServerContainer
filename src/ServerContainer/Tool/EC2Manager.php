@@ -34,16 +34,18 @@ function generatePassword($passwordLength = 8) {
 }
 
 
-class EC2Manager {
+class EC2Manager
+{
 
     /**
      * @var Ec2Client
      */
     private $ec2;
     
-    function __construct() {
-        //$this->ec2 = createClient('ap-southeast-2');
-        $this->ec2 = createClient('eu-west-1');
+    function __construct($awsKey, $awsSecret)
+    {
+        $this->ec2 = createClient('eu-west-1', $awsKey, $awsSecret);
+        
         
     }
 
@@ -59,10 +61,9 @@ class EC2Manager {
         $this->getIPAddressInfo();
     }
     
-    function getIPAddressInfo() {
-
+    function getIPAddressInfo()
+    {
         //$ipAddress = '54.252.86.140';
-
         $ipAddress = '52.64.1.109';
         
         $params = array(
@@ -71,7 +72,6 @@ class EC2Manager {
         $response = $this->ec2->describeAddresses($params);
         
         var_dump($response);
-        
     }
 
     
@@ -104,7 +104,8 @@ class EC2Manager {
     /**
      *
      */
-    function killTestInstances() {
+    function killTestInstances()
+    {
         $testInstances = $this->findTestInstances();
 
         if(count($testInstances) == 0){
@@ -148,13 +149,6 @@ class EC2Manager {
             //array("Key" => 'Shamoan', "Value" => 'mothafarjer'),
         );
 
-        $fileContents = $this->getBootstrapScript();
-
-        $userData = base64_encode($fileContents);
-        if (count($userData) > 16383 ) {
-            throw new ServerContainerException('Startup package exceeds 16KB. Please adjust and try again');
-        }
-
         $placement = array(
             'AvailabilityZone' => 'eu-west-1a',
             'Tenancy' => 'default'
@@ -166,9 +160,7 @@ class EC2Manager {
             'MaxCount' => 1,
             'InstanceType' => AMAZON_EC2_INSTANCE_TYPE,
             'KeyName' => AMAZON_EC2_SSH_KEY_PAIR_NAME,
-            //'SecurityGroups' => array(AMAZON_EC2_SECURITY_GROUP),
             'SecurityGroupIds' => array(AMAZON_EC2_SECURITY_GROUP),
-            //"UserData" => $userData,
             'SubnetId' => AMAZON_EC2_VPC,
             //'Placement' => $placement
             'Ebs' => [
@@ -180,9 +172,6 @@ class EC2Manager {
 //                'Arn' => 'string',
 //                'Name' => 'string',
 //            ),
-            
-            //'UserData' => base64_encode()
-                
             ]
         );
         
@@ -230,11 +219,7 @@ class EC2Manager {
         $sshCommand .= "or ssh -i ".AMAZON_EC2_SSH_KEY_PAIR_NAME.".pem $username@test.basereality.com "."\r\n";
 
         echo  "Connect to the instance using the command:".$sshCommand."\r\n";
-        echo "and then run\n";
-        
-        echo $fileContents;
-        
-        
+        echo "and then run the cloundinit script\n";
     }
 
 
@@ -352,234 +337,6 @@ class EC2Manager {
         echo "Address $ipAddress should now be associated with instance $instanceID"."\r\n";
     }
 
-    function getBootstrapScript()
-    {
-$cloundInitScript = <<< 'SCRIPT'
-#!/bin/bash
-
-read -r -d '' contents <<'EOF'
-# http://serverfault.com/questions/148341/linux-schedule-command-to-run-once-after-reboot-runonce-equivalent
-# Copy this file to /usr/local/bin/runonce
-# and add this entry to crontab
-# @reboot     /usr/local/bin/runonce.sh
-
-mkdir -p /etc/local/runonce.d/ran
-
-for file in /etc/local/runonce.d/*
-do
-    if [ ! -f "$file" ]
-    then
-        continue
-    fi
-    "$file"
-    basename=$(basename "$file")
-    mv "$file" "/etc/local/runonce.d/ran/$basename.$(date +%Y%m%dT%H%M%S)"
-    logger -t runonce -p local3.info "$file"
-done
-EOF
-
-echo "$contents" > /usr/local/bin/runonce.sh
-chmod +x /usr/local/bin/runonce.sh
-
-read -r -d '' contents <<'EOF'
-#!/bin/sh
-
-mkdir -p /tmp/install
-cd /tmp/install
-
-mkdir -p /home/servercontainer/servercontainer
-
-#wget --output-document=/tmp/install/srcBootstrap.sh --no-check-certificate https://raw.githubusercontent.com/Danack/ServerContainer/master/scripts/bootStrap.sh
-
-#sh /tmp/install/srcBootstrap.sh
-
-# yum -y erase python-setuptools
-
-
-
-
-cd /tmp
-curl -L "https://github.com/Danack/ServerContainer/archive/master.tar.gz" -o "master.tgz"
-#wget -O master.tgz https://github.com/Danack/ServerContainer/archive/master.tar.gz
-tar -xvf master.tgz
-cd ./ServerContainer-master/scripts
-sh ./bootstrap/bootStrap.sh
-
-EOF
-
-mkdir -p /etc/local/runonce.d
-
-echo "$contents" > /etc/local/runonce.d/installServerContainer.sh
-
-chmod +x /etc/local/runonce.d/installServerContainer.sh
-
-(crontab -u root -l; echo "@reboot     /usr/local/bin/runonce.sh" ) | crontab -u root -
-
-mkdir -p /home/servercontainer
-
-
-SCRIPT;
-        //$cloundInitScript .= $this->getClavisWritingScript();
-        
-        $cloundInitScript .= "
-         
-            # reboot 
-        ";
-
-        return $cloundInitScript;
-    }
-
-    /**
-     * @return mixed|string
-     */
-    function getBootstrapScriptRunningInCloundInit() {
-        $bootStrapFilename = __DIR__."/../../../scripts/bootstrap/bootStrap.sh";
-        $bootstrapFileContents = file_get_contents($bootStrapFilename);
-
-        if ($bootstrapFileContents === false) {
-            throw new ServerContainerException("Failed to open $bootStrapFilename to build complete bootstrap.");
-        }
-
-        $clavisBuilder = $this->getClavisWritingScript();
-        $bootstrapFileContents = str_replace("# %CLAVIS_WRITER%", $clavisBuilder, $bootstrapFileContents);
-
-        $intahwebzConf = $this->getIntahwebzConfigWritingScript();
-        $bootstrapFileContents = str_replace("# %INTAHWEBZ_CONF%", $intahwebzConf, $bootstrapFileContents);
-
-        return $bootstrapFileContents;
-    }
-
-
-    function getIntahwebzConfigWritingScript() {
-
-$configContents = <<< 'END'
-<?php
-
-define('HACKING', false);
-
-define('LIVE_SERVER', TRUE);
-define('SCRIPTS_VERSION', '1.9.8');
-
-if(HACKING == false){
-	define('CONTENT_BUCKET', 'content.basereality.com');
-	define('BACKUP_BUCKET', 'backup.basereality.com');
-}
-else{
-	define('CONTENT_BUCKET', 'contenttest3.basereality.com');
-	define('BACKUP_BUCKET', 'backuptest3.basereality.com');
-}
-
-//This bucket is the same across all instances. It allows us to have large images in
-//articles that are shown the same across all servers.
-define('STATIC_BUCKET', 'static.basereality.com');
-
-define('MYSQL_PORT', 3306);
-
-define('MYSQL_USERNAME', 'intahwebz');
-define('MYSQL_PASSWORD', 'pass123');
-define('MYSQL_ROOT_PASSWORD', 'pass123');
-define('JIG_RENDER_CHECK', 'COMPILE_CHECK_EXISTS');
-define('MYSQL_SERVER', null);
-define('MYSQL_SOCKET_CONNECTION', '/var/lib/mysql/mysql.sock');
-
-define('CDN_CNAMES', 5);
-define('CDN_ENABLED', FALSE);
-define('ROOT_DOMAIN', 'basereality.test');
-define('BLOG_ROOT_DOMAIN', 'blog.basereality.test');
-
-////Intahwebz credentials
-define('AWS_SERVICES_KEY', '%INTAHWEBZ_AWS_SERVICES_KEY%');
-define('AWS_SERVICES_SECRET', '%INTAHWEBZ_AWS_SERVICES_SECRET%');
-
-//Root credentials
-define('FLICKR_KEY', '%FLICKR_KEY%');
-define('FLICKR_SECRET', '%FLICKR_SECRET%');
-
-define('GITHUB_ACCESS_TOKEN', '%GITHUB_ACCESS_TOKEN%');
-define('GITHUB_REPO_NAME', 'Danack/intahwebz');
-
-END;
-
-        return $this->genConfig($configContents, "/home/intahwebz/intahwebzConf.php");
-    }
-
-    function getClavisWritingScript() {
-
-        $clavisContents = <<< END
-<?php
-
-define('FLICKR_KEY', '%FLICKR_KEY%');
-define('FLICKR_SECRET', '%FLICKR_SECRET%');
-
-define('GITHUB_ACCESS_TOKEN', '%GITHUB_ACCESS_TOKEN%');
-define('GITHUB_REPO_NAME', 'Danack/ServerContainer');
-
-define('MYSQL_USERNAME', '%MYSQL_PASSWORD%');
-define('MYSQL_PASSWORD', '%MYSQL_PASSWORD%');
-define('MYSQL_ROOT_PASSWORD', '%MYSQL_ROOT_PASSWORD%');
-
-//Server container
-define('AWS_SERVICES_KEY', '%AWS_SERVICES_KEY%');
-define('AWS_SERVICES_SECRET', '%AWS_SERVICES_SECRET%');
-
-http://www.bashton.com/blog/2013/centos-6-4-ami-available/
-define('AMAZON_MACHINE_IMAGE_NAME', 'ami-f261f0c8'); //Centos Sydney - not sure I trust them
-define('AMAZON_EC2_INSTANCE_TYPE', 'm1.small');
-define('AMAZON_EC2_SECURITY_GROUP', 'WebFrontendSecurityGroup');
-define('AMAZON_EC2_SSH_KEY_PAIR_NAME', 'OzServer1');
-
-\\\$clavisList = array(
-    'GITHUB_REPO_NAME',
-    'GITHUB_ACCESS_TOKEN',
-    'FLICKR_KEY',
-    'FLICKR_SECRET',
-    'AWS_SERVICES_KEY',
-    'AWS_SERVICES_SECRET',
-);
-
-END;
-
-        return $this->genConfig($clavisContents, "/home/servercontainer/clavis.php");
- 
-    }
-
-    function genConfig($configPlaceHolder, $filename) {
-
-
-        if (isset($clavisList) == false) {
-            throw new ServerContainerException("clavisList not set.");
-        }
-        $searchReplaceArray = array();
-        foreach ($clavisList as $key) {
-            if (defined($key) == false) {
-                throw new ServerContainerException("Key $key is not defined.");
-            }
-            $searchReplaceArray["%$key%"] = constant($key);
-        }
-
-        $searchReplaceArray['%MYSQL_PASSWORD%'] = 'intahwebz';
-        $searchReplaceArray['%MYSQL_PASSWORD%'] = 'intahwebz';
-        $searchReplaceArray['%MYSQL_ROOT_PASSWORD%'] = 'pass123';
-
-        $searchArray = array_keys($searchReplaceArray);
-        $replaceArray = array_values($searchReplaceArray);
-        $bootstrapFileContents = str_replace($searchArray, $replaceArray, $configPlaceHolder);
-
-        $output = "\n";
-
-        $pipe = ">";
-        foreach (explode("\n", $bootstrapFileContents) as $line) {
-            $output .= "echo \"$line\" $pipe $filename \n";
-            $pipe = ">>";
-        }
-
-        $output .= "\n";
-
-        return $output;
-
-    }
-
-    
     
     /**
      * @return bool

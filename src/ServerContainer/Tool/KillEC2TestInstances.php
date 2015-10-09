@@ -14,8 +14,8 @@ class KillEC2TestInstances {
      */
     private $ec2;
     
-    function __construct() {
-        $this->ec2 = createClient('ap-southeast-2');
+    function __construct($awsKey, $awsSecret) {
+        $this->ec2 = createClient('ap-southeast-2', $awsKey, $awsSecret);
     }
 
     /**
