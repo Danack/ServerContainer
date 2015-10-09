@@ -11,30 +11,24 @@ fi
 
 intahwebzGroup="www-data"
 
-cd /home/github/ServerContainer/ServerContainer
+# This script is meant to be run in the root directory of servercontainer files
+# mkdir -p /home/servercontainer
+
+projectDir=`pwd`
+
 yum localinstall -y lib/mysql-community-release-el6-5.noarch.rpm
 
-
-mkdir -p /home/servercontainer
-
-cd /home/github/ServerContainer/ServerContainer/scripts
-
-bash ./build/importBaserealityGPGPublicKey.sh
-bash ./build/addBaserealityRPMRepo.sh
-bash ./build/installPackages.sh
-bash ./build/configureIPTables.sh
-bash ./build/createGroup.sh
-bash ./build/setupComposer.sh
-
-cd /home/github/ServerContainer/ServerContainer
+bash ./scripts/build/importBaserealityGPGPublicKey.sh
+bash ./scripts/build/addBaserealityRPMRepo.sh
+bash ./scripts/build/installPackages.sh
+bash ./scripts/build/configureIPTables.sh
+bash ./scripts/build/createGroup.sh
+bash ./scripts/build/setupComposer.sh
 
 oauthtoken=`php bin/info.php "github.access_token"`
 composer config -g github-oauth.github.com $oauthtoken
 
-
 sh scripts/build/configurateTemplates.sh $environment
-
-cd /home/github/ServerContainer/ServerContainer/scripts
 
 usermod -a -G www-data nginx
 
@@ -48,15 +42,12 @@ users+=("servercontainer")
 for user in "${users[@]}"
 do
    :
-   . ./build/createUser.sh $user
+   . ./scripts/build/createUser.sh $user
 done
 
-
 /etc/init.d/mysqld start
-. ./build/configureMySQL.sh intahwebz pass123 pass123
+. ./scripts/build/configureMySQL.sh intahwebz pass123 pass123
 
-#cp /home/github/intahwebz/intahwebzConf.php /home/intahwebz/intahwebzConf.php
-#ln -s /home/github/ServerContainer/clavis.php /home/servercontainer/clavis.php 
 
 nginx
 /etc/init.d/php-fpm start
@@ -64,3 +55,5 @@ nginx
 /etc/init.d/supervisord start
 
 echo "imagick.test 127.0.0.1" >> /etc/hosts
+
+echo "you now need to put the clavis file in the right place"
