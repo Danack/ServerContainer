@@ -9,7 +9,7 @@ set -x #echo on
 
 mkdir -p /home/servercontainer/servercontainer
 
-cp -R /tmp/ServerContainer-master/* /home/servercontainer/servercontainer
+cp -R /tmp/servercontainer/ServerContainer-master/* /home/servercontainer/servercontainer
 
 find /home/servercontainer -type d -exec chmod 755 {} \;
 find /home/servercontainer -type f -exec chmod 755 {} \;
