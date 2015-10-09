@@ -49,7 +49,7 @@ done
 . ./scripts/build/configureMySQL.sh intahwebz pass123 pass123
 
 
-nginx
+nginx || nginx -s reload
 /etc/init.d/php-fpm start
 /etc/init.d/redis start
 /etc/init.d/supervisord start
