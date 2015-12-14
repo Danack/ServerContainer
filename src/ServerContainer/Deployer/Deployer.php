@@ -39,6 +39,7 @@ class Deployer
             'imagickdemos' => [ 'danack', 'Imagick-demos', 'master', 'version' => 'latest' ],
             'basereality'    => [ 'danack', 'intahwebz', 'master', 'version' => 'latest' ],
             'intahwebz'    => [ 'danack', 'intahwebz_com', 'master', 'version' => 'latest' ],
+            'tierjigdocs'    => [ 'danack', 'tierjigdocs', 'master', 'version' => 'latest' ],
         ];
 
         $this->artaxClient = $artaxClient;

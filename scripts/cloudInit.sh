@@ -3,8 +3,8 @@
 
 mkdir -p /home/servercontainer
 mkdir -p /tmp/servercontainer
-# vi /tmp/servercontainer/clavis.php
-# vi /home/servercontainer/clavis.php
+vi /tmp/servercontainer/clavis.php
+vi /home/servercontainer/clavis.php
 
 #put clavis.php in /tmp/servercontainer/clavis.php and /home/servercontainer/clavis.php
 

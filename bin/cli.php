@@ -18,7 +18,7 @@ require_once(__DIR__.'/../vendor/autoload.php');
 require_once __DIR__.'/../../clavis.php';
 
 
-require_once __DIR__.'/../../settings.php';
+require_once __DIR__.'/../settings.php';
 
 function exceptionHandler(Exception $ex)
 {

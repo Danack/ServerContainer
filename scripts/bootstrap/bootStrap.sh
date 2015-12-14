@@ -4,16 +4,8 @@ set -x #echo on
 
 . ./build/createGroup.sh
 
-users=()
-users+=("blog")
-users+=("intahwebz")
-users+=("servercontainer")
+. ./bootstrap/createUsers.sh
 
-for user in "${users[@]}"
-do
-   :
-   . ./build/createUser.sh $user
-done
 
 mkdir -p /home/servercontainer/servercontainer
 

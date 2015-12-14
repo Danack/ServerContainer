@@ -12,7 +12,7 @@ packages+=("libjpeg-turbo")
 packages+=("libpng")
 #packages+=("ImageMagick-2015_06_22")
 packages+=("ImageMagick-2015_09_19")
-packages+=("imagick-php5.6-2015_10_07-master")
+packages+=("imagick-php5.6-2015_12_06.x86_64")
 packages+=("php-basereality-2015_10_05-5.6.9")
 
 packages+=("mysql-community-client");

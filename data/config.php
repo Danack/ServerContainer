@@ -45,6 +45,6 @@ $evaluate = function ($config, $environment) {
     $app_name = $config['app_name'];
 
     return [
-        'phpfpm_socket_fullpath' => "$phpfpm_socket_directory/php-fpm-$app_name.sock"
+        'phpfpm_socket_fullpath' => "$phpfpm_socket_directory/php-fpm-$app_name.sock",
     ]; 
 };

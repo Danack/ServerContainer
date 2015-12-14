@@ -38,6 +38,8 @@ users+=("blog")
 users+=("imagickdemos")
 users+=("intahwebz")
 users+=("servercontainer")
+users+=("tierjigdocs")
+
 
 for user in "${users[@]}"
 do
@@ -54,6 +56,8 @@ nginx || nginx -s reload
 /etc/init.d/redis start
 /etc/init.d/supervisord start
 
-echo "imagick.test 127.0.0.1" >> /etc/hosts
+echo "127.0.0.1 imagick.test" >> /etc/hosts
+echo "127.0.0.1 internal.phpimagick.com" >> /etc/hosts
+echo "127.0.0.1 internal.phpimagick.test" >> /etc/hosts
 
 echo "you now need to put the clavis file in the right place"
