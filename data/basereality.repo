@@ -3,13 +3,16 @@
 
 [basereality]
 name=BaseReality packages
-baseurl=http://rpm.basereality.com/RPMS/$basearch
+#baseurl=http://rpm.basereality.com/RPMS/$basearch
+baseurl=file:///home/rpm/repo/RPMS/$basearch
+
 enabled=1
 gpgcheck=1
 
 [basereality-noarch]
 name=BaseReality noarch packages
-baseurl=http://rpm.basereality.com/RPMS/noarch
+#baseurl=http://rpm.basereality.com/RPMS/noarch
+baseurl=file:///home/rpm/repo/RPMS/noarch
 enabled=1
 gpgcheck=1
 
