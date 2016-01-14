@@ -9,7 +9,6 @@ vi /home/servercontainer/clavis.php
 #put clavis.php in /tmp/servercontainer/clavis.php and /home/servercontainer/clavis.php
 
 
-
 if [ ! -f /tmp/servercontainer/clavis.php ]
   then
     echo "You forgot to create /tmp/servercontainer/clavis.php"

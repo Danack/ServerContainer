@@ -4,10 +4,6 @@
     "description": "A poor mans docker.",
 
     "repositories": [
-        { 
-            "type": "composer", 
-             "url": "http://satis.basereality.com"
-        },
         {
           "type": "vcs",
           "url": "https://github.com/danack/auryn"
@@ -30,6 +26,6 @@
             "ServerContainer": ["src/"]
         }
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "RC",
     "prefer-stable": true
 }
