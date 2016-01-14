@@ -50,11 +50,13 @@ done
 /etc/init.d/mysqld start
 . ./scripts/build/configureMySQL.sh intahwebz pass123 pass123
 
-
+set +e
 nginx || nginx -s reload
 /etc/init.d/php-fpm start
 /etc/init.d/redis start
 /etc/init.d/supervisord start
+
+
 
 echo "127.0.0.1 imagick.test" >> /etc/hosts
 echo "127.0.0.1 internal.phpimagick.com" >> /etc/hosts
