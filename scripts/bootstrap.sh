@@ -28,8 +28,6 @@ bash ./scripts/build/setupComposer.sh
 oauthtoken=`php bin/info.php "github.access_token"`
 composer config -g github-oauth.github.com $oauthtoken
 
-sh scripts/build/configurateTemplates.sh $environment
-
 usermod -a -G www-data nginx
 
 users=( )
@@ -46,6 +44,13 @@ do
    :
    . ./scripts/build/createUser.sh $user
 done
+
+
+cd /home/servercontainer/servercontainer
+php -d allow_url_fopen=1 /usr/sbin/composer install --no-interaction --prefer-dist --no-dev
+
+sh scripts/build/configurateTemplates.sh $environment
+
 
 /etc/init.d/mysqld start
 . ./scripts/build/configureMySQL.sh intahwebz pass123 pass123

@@ -17,5 +17,5 @@ chown -R servercontainer:www-data /home/servercontainer
 cd /home/servercontainer/servercontainer
 sh scripts/bootstrap.sh
 
-cd /home/servercontainer/servercontainer
-php -d allow_url_fopen=1 /usr/sbin/composer install --no-interaction --prefer-dist --no-dev
+
+nginx -s reload
