@@ -8,7 +8,9 @@ fi
 
 echo "environment is ${environment}";
 
-php vendor/bin/configurate -p data/config.php data/config_template/my.cnf.php autogen/my.cnf.conf $environment
+mkdir autogen
+
+php vendor/bin/configurate -p data/config.php data/config_template/my.cnf.php autogen/my.cnf $environment
 php vendor/bin/configurate -p data/config.php data/config_template/nginx.conf.php autogen/nginx.conf $environment
 php vendor/bin/configurate -p data/config.php data/config_template/php-fpm.conf.php autogen/php-fpm.conf $environment
 php vendor/bin/configurate -p data/config.php data/config_template/php.ini.php autogen/php.ini $environment

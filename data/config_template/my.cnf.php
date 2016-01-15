@@ -48,7 +48,7 @@ slow_query_log_file=${'mysql_log_directory'}/mysql_slow_query.log
 # skip-networking
 key_buffer = 16K
 max_allowed_packet = 1M
-table_cache = 48
+table_open_cache = 48
 sort_buffer_size = 64K
 read_buffer_size = 256K
 read_rnd_buffer_size = 256K
@@ -92,7 +92,7 @@ innodb_strict_mode=on
 #innodb_flush_log_at_trx_commit = 1
 #innodb_lock_wait_timeout = 50
 
-innodb_buffer_pool_size=128M
+innodb_buffer_pool_size=64M
 innodb_additional_mem_pool_size = 16M
 innodb_flush_method=O_DIRECT
 
