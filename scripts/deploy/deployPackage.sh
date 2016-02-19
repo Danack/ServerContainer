@@ -19,10 +19,17 @@ envSetting=$5
 sh ./scripts/build/createUser.sh $projectName
 
 projectRootDir="/home/${projectName}"
+currentDir="${projectRootDir}/current"
 targetDir="${projectRootDir}/${sha}"
 
 mkdir -p $targetDir
 tar -xf ${zipName} -C $targetDir --strip-components=1
+
+set +e
+unlink "${currentDir}"
+set -e
+#n stops it from borking.
+ln -sfn "${targetDir}" "${currentDir}"
 
 php bin/cli.php writeClavisFile \
     ${projectName} \

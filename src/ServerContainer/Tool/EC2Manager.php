@@ -174,12 +174,8 @@ class EC2Manager
 //            ),
             ]
         );
-        
-
-
 
         $data = $response->toArray();
-
         $instanceID = null;
 
         foreach ($data['Instances'] as $instance) {

@@ -6,7 +6,9 @@ $config = <<< END
 default-character-set=${'mysql_charset'}
 
 user=mysql
-symbolic-links=0
+# This has been removed
+# symbolic-links=0
+
 [mysqld_safe]
 log-error=/var/log/mysqld.log
 pid-file=/var/run/mysqld/mysqld.pid
@@ -45,7 +47,7 @@ slow_query_log_file=${'mysql_log_directory'}/mysql_slow_query.log
 
 
 # skip-locking
-# skip-networking
+skip-networking
 key_buffer = 16K
 max_allowed_packet = 1M
 table_open_cache = 48

@@ -9,10 +9,11 @@
 
     "require":{
         "aws/aws-sdk-php": "~2.7.12",
-        "rdlowrey/auryn": "^1.0.2",
         "danack/console": "~2.6.1",
+        "danack/tier": "^0.3.9",
         "danack/githubartaxservice": "0.4.4",
-        "intahwebz/configurator": "^0.2.9"
+        "intahwebz/configurator": "^0.2.9",
+        "rdlowrey/auryn": "^1.0.2"
     },
     "autoload": {
         "psr-0": {

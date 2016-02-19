@@ -29,7 +29,7 @@ class ClavisWriter
 
         $this->keysNeeded = json_decode($keysNeededJSON);
 
-        if ($this->keysNeeded == null) {
+        if ($this->keysNeeded === null) {
             $msg = sprintf( "JSON error %d : %s",
                 json_last_error(),
                 json_last_error_msg()

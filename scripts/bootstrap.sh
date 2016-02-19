@@ -33,6 +33,7 @@ usermod -a -G www-data nginx
 users=( )
 users+=("basereality")
 users+=("blog")
+users+=("docs")
 users+=("imagickdemos")
 users+=("intahwebz")
 users+=("servercontainer")

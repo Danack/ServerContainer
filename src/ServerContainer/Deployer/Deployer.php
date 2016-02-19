@@ -6,7 +6,7 @@ use GithubService\GithubArtaxService\GithubService;
 use Amp\Artax\Client as ArtaxClient;
 use Amp\Artax\Response;
 use ArtaxServiceBuilder\Oauth2Token;
-use ServerContainer\MessageException;
+use ServerContainer\UserErrorMessageException;
 use ServerContainer\ServerContainerException;
 
 class Deployer
@@ -32,10 +32,12 @@ class Deployer
         ArtaxClient $artaxClient,
         Oauth2Token $oauthToken,
         $tempDirectory,
-        $cacheDirectory) {
+        $cacheDirectory
+    ) {
         $this->githubService = $githubService;
         $this->appConfigList = [
             'blog'    => [ 'danack', 'blog', 'master', 'version' => 'latest' ],
+            'docs'    => [ 'danack', 'docs', 'master', 'version' => 'latest' ],
             'imagickdemos' => [ 'danack', 'Imagick-demos', 'master', 'version' => 'latest' ],
             'basereality'    => [ 'danack', 'intahwebz', 'master', 'version' => 'latest' ],
             'intahwebz'    => [ 'danack', 'intahwebz_com', 'master', 'version' => 'latest' ],
@@ -58,14 +60,14 @@ class Deployer
         $appsString .= " or 'all'.";
 
         if (strlen($application) == null) {
-            throw new MessageException("Please specify the application to deploy, one of ".$appsString);
+            throw new UserErrorMessageException("Please specify the application to deploy, one of ".$appsString);
         }
 
         if ($application === 'all') {
             //allowed
         }
         else if (array_key_exists($application, $this->appConfigList) == false) {
-            throw new MessageException("Unknown application '$application', please choose one of $appsString");
+            throw new UserErrorMessageException("Unknown application '$application', please choose one of $appsString");
         }
 
         foreach ($this->appConfigList as $projectName => $appConfig) {
